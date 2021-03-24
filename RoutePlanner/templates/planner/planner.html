@@ -1,4 +1,4 @@
-{% extends "blog/base.html" %}
+{% extends "base.html" %}
 {% block content %}
     <head>
         <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
@@ -7,12 +7,51 @@
         <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
         <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
         <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet'/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
 
 
     </head>
     <body>
-    <div id='map' style='width: 700px; height: 700px;'></div>
+    {% csrf_token %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+            </div>
+            <div class="col-sm">
+                <div class="row">
+                    <h1>Route Planner:</h1>
+                </div>
+
+                <div class="row">
+                    <div id='map' style='width: 700px; height: 700px;'></div>
+                </div>
+
+                <div class="row">
+                    <div id="undo">
+                        <button onclick="undo()">Undo</button>
+                    </div>
+                    <div id="save">
+                        <button onclick="saveRoute()">Save</button>
+                    </div>
+                </div>
+
+                <dic class="row">
+                    <div id="instructions"></div>
+                </dic>
+            </div>
+            <div class="col-sm">
+            </div>
+        </div>
+    </div>
+
     <script>
+
+        //Constants:
+        const saveRouteUrl = "";
+
+
         mapboxgl.accessToken = 'pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ';
         var map = new mapboxgl.Map({
             container: 'map',
@@ -75,14 +114,6 @@
                         map.getSource('route').setData(geojson);
                         //update the position of the end marker to new end of route
                         endMarker.setLngLat(points[points.length - 1]);
-                        /*if (points.length > 2) {
-                            newPointMarker = new mapboxgl.Marker({color: "blue", draggable: true});
-                            newPointMarker
-                                .setLngLat(points[points.length - 2])
-                                .on('dragend', repositionMarker(points_markers.length))
-                                .addTo(map);
-                            points_markers.push(newPointMarker);
-                        }*/
                         console.log("Set Data");
                     } else { // otherwise, make a new request
                         console.log("New Layer");
@@ -163,6 +194,38 @@
             getRoute(points);
         }
 
+        function saveRoute() {
+
+            title = prompt("Give your route a name:", "My route");
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open("POST", "", false);
+            xhr.withCredentials = true;
+            xhr.setRequestHeader("x-csrf-token", "fetch");
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            xhr.send(null);
+
+            if (xhr.readyState === 4) {
+                var csrfToken = xhr.getResponseHeader('x-csrf-token');
+
+                xhr.open('POST', '', false);
+                xhr.setRequestHeader('x-csrf-token', csrfToken);
+                xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                xhr.setRequestHeader("Accept", "application/json");
+
+                xhr.send(JSON.stringify({
+                    points: points,
+                    title: title
+                }));
+
+                if (xhr.readyState === 4) {
+                    res = JSON.parse(this.responseText);
+                }
+            }
+        }
+
         function repositionEndMarker() {
             console.log("End marker moved");
             console.log("New end: " + endMarker.getLngLat().lng + ", " + endMarker.getLngLat().lat);
@@ -180,25 +243,9 @@
             getRoute(points);
         }
 
-        /*function repositionMarker(index){
-            console.log("Waypoint moved");
-            points[index][0] = points_markers[index].getLngLat().lng;
-            points[index][1] = points_markers[index].getLngLat().lat;
-            getRoute();
-        }*/
-
         endMarker.on('dragend', repositionEndMarker);
         startMarker.on('dragend', repositionStartMarker);
 
-        /*for (waypoint = 0; waypoint < points_markers.length; waypoint++){
-            points_markers[waypoint].on('dragend', repositionMarker(waypoint));
-        }*/
-
-
     </script>
-    <div id="undo">
-        <button onclick="undo()">Undo</button>
-    </div>
-    <div id="instructions"></div>
     </body>
 {% endblock content %}
