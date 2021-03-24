@@ -1,10 +1,204 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
+{% extends "blog/base.html" %}
+{% block content %}
+    <head>
+        <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+        <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet'/>
 
-</body>
-</html>
+        <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+        <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet'/>
+
+
+    </head>
+    <body>
+    <div id='map' style='width: 700px; height: 700px;'></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/outdoors-v11',
+            center: [-0.57048282701993, 51.23653894018821], // starting position
+            zoom: 12
+        });
+
+        // initialize the map canvas to interact with later
+        var canvas = map.getCanvasContainer();
+
+        var points = [];
+
+        var endMarker = new mapboxgl.Marker({color: "red", draggable: true});
+        var startMarker = new mapboxgl.Marker({color: "green", draggable: true});
+
+        // create a function to make a directions request
+        function getRoute(points) {
+            console.log(points.length);
+            if (points.length > 1) {
+                steps = "";
+                for (i = 0; i < points.length; i++) {
+                    if (steps == "") {
+                        steps = steps + points[i][0] + ',' + points[i][1];
+                    } else {
+                        steps = steps + ';' + points[i][0] + ',' + points[i][1];
+                    }
+
+                }
+                console.log("Steps: " + steps);
+
+                var url = 'https://api.mapbox.com/directions/v5/mapbox/walking/' + steps + '?alternatives=true&geometries=geojson&steps=true&access_token=' + mapboxgl.accessToken;
+                console.log(url);
+                var req = new XMLHttpRequest();
+                req.open('GET', url, true);
+                req.onload = function () {
+                    var json = JSON.parse(req.response);
+                    var data = json.routes[0];
+                    var route = data.geometry.coordinates;
+                    console.log("Route: " + route);
+                    var geojson = {
+                        type: 'Feature',
+                        properties: {},
+                        geometry: {
+                            type: 'LineString',
+                            coordinates: route
+                        }
+                    };
+                    //Get Instructions:
+                    var instructions = document.getElementById('instructions');
+                    var steps = data.legs[0].steps;
+
+                    var tripInstructions = [];
+                    for (var i = 0; i < steps.length; i++) {
+                        tripInstructions.push('<br><li>' + steps[i].maneuver.instruction) + '</li>';
+                        instructions.innerHTML = '<br><span class="duration">Trip duration: ' + Math.floor(data.duration / 60) + ' min 🚴 </span>' + tripInstructions;
+                    }
+                    // if the route already exists on the map, reset it using setData
+                    if (map.getSource('route')) {
+                        map.getSource('route').setData(geojson);
+                        //update the position of the end marker to new end of route
+                        endMarker.setLngLat(points[points.length - 1]);
+                        /*if (points.length > 2) {
+                            newPointMarker = new mapboxgl.Marker({color: "blue", draggable: true});
+                            newPointMarker
+                                .setLngLat(points[points.length - 2])
+                                .on('dragend', repositionMarker(points_markers.length))
+                                .addTo(map);
+                            points_markers.push(newPointMarker);
+                        }*/
+                        console.log("Set Data");
+                    } else { // otherwise, make a new request
+                        console.log("New Layer");
+                        map.addLayer({
+                            id: 'route',
+                            type: 'line',
+                            source: {
+                                type: 'geojson',
+                                data: {
+                                    type: 'Feature',
+                                    properties: {},
+                                    geometry: {
+                                        type: 'LineString',
+                                        coordinates: geojson
+                                    }
+                                }
+                            },
+                            layout: {
+                                'line-join': 'round',
+                                'line-cap': 'round'
+                            },
+                            paint: {
+                                'line-color': '#3887be',
+                                'line-width': 5,
+                                'line-opacity': 0.75
+                            }
+                        });
+                        map.getSource('route').setData(geojson);
+                        console.log("Set Data after New Layer");
+                        //Add the end marker to the map for the first time
+                        endMarker
+                            .setLngLat(points[points.length - 1])
+                            .setPopup(new mapboxgl.Popup().setHTML("End"))
+                            .addTo(map);
+                    }
+                };
+                req.send();
+            } else if (points.length == 1) {
+                console.log("Initial point triggered");
+                if (!map.getSource('start')) {
+                    console.log("No start layer detected");
+                    startMarker
+                        .setLngLat(points[0])
+                        .setPopup(new mapboxgl.Popup().setHTML("Start"))
+                        .addTo(map);
+                }
+            }
+
+        }
+
+        map.on('click', function (e) {
+            var coordsObj = e.lngLat;
+            canvas.style.cursor = '';
+            var coords = Object.keys(coordsObj).map(function (key) {
+                return coordsObj[key];
+            });
+
+            points.push(coords);
+            console.log("Coords: " + coords);
+            console.log("Points: " + points);
+
+            getRoute(points);
+        });
+
+        function undo() {
+            points.splice(points.length - 1, 1);
+            console.log(points);
+            if (map.getLayer('route')) {
+                map.removeLayer('route');
+            }
+            if (map.getSource('route')) {
+                map.removeSource('route');
+            }
+            endMarker.remove();
+            if (points.length == 0) {
+                startMarker.remove();
+            }
+            getRoute(points);
+        }
+
+        function repositionEndMarker() {
+            console.log("End marker moved");
+            console.log("New end: " + endMarker.getLngLat().lng + ", " + endMarker.getLngLat().lat);
+            points[points.length - 1][0] = endMarker.getLngLat().lng;
+            points[points.length - 1][1] = endMarker.getLngLat().lat;
+            getRoute(points);
+
+        }
+
+        function repositionStartMarker() {
+            console.log("End marker moved");
+            console.log("New end: " + startMarker.getLngLat().lng + ", " + startMarker.getLngLat().lat);
+            points[0][0] = startMarker.getLngLat().lng;
+            points[0][1] = startMarker.getLngLat().lat;
+            getRoute(points);
+        }
+
+        /*function repositionMarker(index){
+            console.log("Waypoint moved");
+            points[index][0] = points_markers[index].getLngLat().lng;
+            points[index][1] = points_markers[index].getLngLat().lat;
+            getRoute();
+        }*/
+
+        endMarker.on('dragend', repositionEndMarker);
+        startMarker.on('dragend', repositionStartMarker);
+
+        /*for (waypoint = 0; waypoint < points_markers.length; waypoint++){
+            points_markers[waypoint].on('dragend', repositionMarker(waypoint));
+        }*/
+
+
+    </script>
+    <div id="undo">
+        <button onclick="undo()">Undo</button>
+    </div>
+    <div id="instructions"></div>
+    </body>
+{% endblock content %}
