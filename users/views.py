@@ -19,14 +19,15 @@ def signup_page(request):
 
     #Create user on POST
     elif request.method == 'POST':
-        username = request.post.username
-        email = request.post.email
-        password = request.post.password
-        password_confirmation = request.post.password_confirmation
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        password_confirmation = request.POST.get('password_confirmation')
     
         #Check passwords match
         if password != password_confirmation:
             error = "Password and confirmation don't match!"
+            ### Need to find some way of keeping entered data! ###
             return render(request, 'users/signup_page.html', {"form": SignupForm(), "error": error})
         
         user = User.objects.create_user(username, email, password)
