@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import json
 from . import models
+import RoutePlanner
 
 
 # Create your views here.
@@ -15,6 +16,7 @@ def routePlanner(request):
         route = models.Route()
         route.create_route(title, points)
         route.save()
+        print(models.Route.objects.get(pk=1).title)
         return HttpResponse("OK")
 
 
