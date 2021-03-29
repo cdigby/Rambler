@@ -12,7 +12,7 @@ class SignupForm(forms.Form):
     password_confirmation = forms.CharField(widget=forms.PasswordInput())
 
 #Signup page
-def signup_page(request):
+def signup_view(request):
     #Load page on GET
     if request.method == 'GET':
         return render(request, 'users/signup_page.html', {"form": SignupForm()})
@@ -31,7 +31,7 @@ def signup_page(request):
             return render(request, 'users/signup_page.html', {"form": SignupForm(), "error": error})
         
         user = User.objects.create_user(username, email, password)
-        redirect('users:profile')
+        return redirect('users:profile')
 
 
 def logout_view(request):
@@ -40,4 +40,4 @@ def logout_view(request):
 
 @login_required
 def profile(request):
-    return render(request, 'users/profile.html')
+    return render(request, 'users/profile.html', {"current_user": request.user})
