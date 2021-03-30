@@ -1,5 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
     Logged in as:
-    {{current_user.username}}
+    {{ user.get_username }}
 {% endblock %}

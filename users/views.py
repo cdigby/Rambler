@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import logout
+from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
 from django import forms
 
@@ -31,6 +31,7 @@ def signup_view(request):
             return render(request, 'users/signup_page.html', {"form": SignupForm(), "error": error})
         
         user = User.objects.create_user(username, email, password)
+        login(request, user)
         return redirect('users:profile')
 
 
@@ -40,4 +41,4 @@ def logout_view(request):
 
 @login_required
 def profile(request):
-    return render(request, 'users/profile.html', {"current_user": request.user})
+    return render(request, 'users/profile.html')
