@@ -16,8 +16,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker-compose build
-    - name: Run the app
       run: docker-compose up -d
-    - name: Bring the app down again
-      run: docker-compose down
+    - name: Check app is running
+      run: docker ps -a 
