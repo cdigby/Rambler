@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
 from django import forms
+from django.contrib import messages
 
 #Define signup form
 class SignupForm(forms.Form):
@@ -26,9 +27,9 @@ def signup_view(request):
     
         #Check passwords match
         if password != password_confirmation:
-            error = "Password and confirmation don't match!"
             ### Need to find some way of keeping entered data! ###
-            return render(request, 'users/signup_page.html', {"form": SignupForm(), "error": error})
+            messages.error(request, "Password and confirmation don't match!")
+            return render(request, 'users/signup_page.html', {"form": SignupForm()})
         
         user = User.objects.create_user(username, email, password)
         login(request, user)
