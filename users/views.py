@@ -2,15 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
-from django import forms
 from django.contrib import messages
-
-#Define signup form
-class SignupForm(forms.Form):
-    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username'}))
-    email = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
-    password = forms.CharField(widget=forms.PasswordInput())
-    password_confirmation = forms.CharField(widget=forms.PasswordInput())
+from .forms import SignupForm, ProfileForm
 
 #Signup page
 def signup_view(request):
@@ -42,4 +35,5 @@ def logout_view(request):
 
 @login_required
 def profile(request):
-    return render(request, 'users/profile.html')
+    form = ProfileForm()
+    return render(request, 'users/profile.html', {'form': form})

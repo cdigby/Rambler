@@ -6,7 +6,16 @@
         </div>
 
         <div class="container">
-        
+            <form action="method">
+                {% include 'forms/input.html' with field=form.username label='Username' %}
+                {% include 'forms/input.html' with field=form.email label='Email' %}
+
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-link">Save</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}
