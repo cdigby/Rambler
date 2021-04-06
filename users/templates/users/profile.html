@@ -6,9 +6,12 @@
         </div>
 
         <div class="container">
-            <form action="post">
+            <form method="post">
+                {% csrf_token %}
                 {% include 'forms/input.html' with field=form.username label='Username' %}
                 {% include 'forms/input.html' with field=form.email label='Email' %}
+                {% include 'forms/input.html' with field=form.password label='Password' %}
+                {% include 'forms/input.html' with field=form.password_confirmation label='Confirm Password' %}
                 {% include 'forms/submit.html' with text='Save' %}
             </form>
         </div>

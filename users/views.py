@@ -7,12 +7,8 @@ from .forms import UserForm
 
 #Signup page
 def signup_view(request):
-    #Load page on GET
-    if request.method == 'GET':
-        return render(request, 'users/signup_page.html', {"form": UserForm()})
-
     #Create user on POST
-    elif request.method == 'POST':
+    if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -27,6 +23,10 @@ def signup_view(request):
         user = User.objects.create_user(username, email, password)
         login(request, user)
         return redirect('users:profile')
+    
+    #Load page on GET
+    else:
+        return render(request, 'users/signup_page.html', {"form": UserForm()})
 
 
 def logout_view(request):
@@ -35,5 +35,23 @@ def logout_view(request):
 
 @login_required
 def profile(request):
-    form = UserForm()
-    return render(request, 'users/profile.html', {'form': form})
+    #Update user details
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            #Save new details
+            messages.success(request, "Profile updated successfully!")
+            return redirect('users:profile')
+        
+        else:
+            #Render profile with errors
+            return render(request, 'users/profile.html', {'form': form})
+
+    #Display user profile
+    else:
+        u = request.user    
+        form = UserForm(initial={
+            'username': u.username,
+            'email': u.email,
+        })
+        return render(request, 'users/profile.html', {'form': form})

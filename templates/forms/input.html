@@ -3,4 +3,9 @@
     <div class="control">
         {{ field }}
     </div>
+    {% if field.errors %}
+    {% for error in field.errors %}
+        <p class="help is-danger">{{ error|escape }}</p>
+    {% endfor %}
+    {% endif %}
 </div>
