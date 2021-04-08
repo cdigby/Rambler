@@ -1,7 +1,17 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
 
-#Define user form
+#Authentication form
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'input'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input'}))
+
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+
+
+#User form for signup and profile
 class UserForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'input'}))
     #EmailField validates itself

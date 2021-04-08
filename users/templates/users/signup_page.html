@@ -1,12 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
-    {% if error %}
-        {{ error }}
-    {% endif %}
+    <div class="section">
+        <div class="container has-text-centered">
+            <p class="title">Sign Up</p>
+        </div>
+
+        <div class="container">
+            <form method="post">
+                {% csrf_token %}
+                {% include 'forms/input.html' with field=form.username label='Username' %}
+                {% include 'forms/input.html' with field=form.email label='Email' %}
+                {% include 'forms/input.html' with field=form.password label='Password' %}
+                {% include 'forms/input.html' with field=form.password_confirmation label='Confirm Password' %}
+                {% include 'forms/submit.html' with text='Sign Up' %}
+            </form>
+        </div>
+    </div>
+
     
-    <form method="post">
-    {% csrf_token %}
-    {{ form }}
-    <button type="submit">Sign Up</button>
-    </form>
 {% endblock %}

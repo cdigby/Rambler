@@ -9,28 +9,30 @@ from .forms import UserForm
 def signup_view(request):
     #Create user on POST
     if request.method == 'POST':
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        password_confirmation = request.POST.get('password_confirmation')
-    
-        #Check passwords match
-        if password != password_confirmation:
-            ### Need to find some way of keeping entered data! ###
-            messages.error(request, "Password and confirmation don't match!")
-            return render(request, 'users/signup_page.html', {"form": UserForm()})
-        
-        user = User.objects.create_user(username, email, password)
-        login(request, user)
-        return redirect('users:profile')
+        form = UserForm(request.POST)
+        if form.is_valid():
+            #Create user and login
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+
+            user = User.objects.create_user(username, email, password)
+            login(request, user)
+            messages.success(request, "Welcome " + username + "!")
+            return redirect('users:profile')
+        else:
+            #Show errors
+            return render(request, 'users/signup_page.html', {"form": form})
     
     #Load page on GET
     else:
-        return render(request, 'users/signup_page.html', {"form": UserForm()})
+        form = UserForm()
+        return render(request, 'users/signup_page.html', {"form": form})
 
 
 def logout_view(request):
     logout(request)
+    messages.info(request, "You have been logged out.")
     return redirect('users:login')
 
 @login_required

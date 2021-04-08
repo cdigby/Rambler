@@ -2,37 +2,28 @@
 
 {% block content %}
 
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
-
 {% if next %}
     {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
+    {% include 'notification.html' with msg='Your account does not have access to this page' type='is-danger' %}
     {% else %}
-    <p>Please login to see this page.</p>
+    {% include 'notification.html' with msg='You must be logged in to access this page' type='is-danger' %}
     {% endif %}
 {% endif %}
 
-<form method="post" action="{% url 'users:login' %}">
-{% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
+<div class="section">
+        <div class="container has-text-centered">
+            <p class="title">Log In</p>
+        </div>
 
-<input type="submit" value="Log In">
-<input type="hidden" name="next" value="{{ next }}">
-</form>
-
-{# Assumes you setup the password_reset view in your URLconf #}
-{#<p><a href="{% url 'password_reset' %}">Lost password?</a></p>#}
+        <div class="container" action="{% url 'users:login' %}">
+            <form method="post">
+                {% csrf_token %}
+                {% include 'forms/input.html' with field=form.username label='Username' %}
+                {% include 'forms/input.html' with field=form.password label='Password' %}
+                {% include 'forms/submit.html' with text='Log In' %}
+                <input type="hidden" name="next" value="{{ next }}">
+            </form>
+        </div>
+    </div>
 
 {% endblock %}
