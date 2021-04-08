@@ -45,8 +45,23 @@ def profile(request):
     if request.method == 'POST':
         form = UserForm(request.POST, initial=initial_profile)
         if form.is_valid():
-            #Save new details
-            messages.success(request, "Profile updated successfully!")
+            #Get new data
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            
+            #Update model
+            u.username = username
+            u.email = email
+
+            #Change password if not empty
+            if password != '':
+                u.set_password(password)
+                messages.success(request, "Saved profile and changed password!")
+            else:
+                messages.success(request, "Saved profile!")
+
+            u.save()
             return redirect('users:profile')
         
         else:
