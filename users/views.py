@@ -35,9 +35,15 @@ def logout_view(request):
 
 @login_required
 def profile(request):
+    u = request.user    
+    initial_profile = {
+        'username': u.username,
+        'email': u.email,
+    }
+
     #Update user details
     if request.method == 'POST':
-        form = UserForm(request.POST)
+        form = UserForm(request.POST, initial=initial_profile)
         if form.is_valid():
             #Save new details
             messages.success(request, "Profile updated successfully!")
@@ -49,9 +55,5 @@ def profile(request):
 
     #Display user profile
     else:
-        u = request.user    
-        form = UserForm(initial={
-            'username': u.username,
-            'email': u.email,
-        })
+        form = UserForm(initial=initial_profile)
         return render(request, 'users/profile.html', {'form': form})
