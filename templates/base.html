@@ -1,0 +1,27 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Rambler{% endblock %}</title>
+    <link rel="stylesheet" href="{% static '/css/bulma.css' %}">
+
+    {# Can later add here any app-wide overrides to bulma #}
+
+    {# App-wide js #}
+    <script src="{% static '/js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static '/js/app.js' %}"></script>
+
+    {# Override these to include any page-specific js and css #}
+    {% block scripts %}{% endblock %}
+    {% block styles %}{% endblock %}
+</head>
+
+<body>
+    {% include 'navbar.html' %}
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
