@@ -30,11 +30,13 @@ def signup_view(request):
         return render(request, 'users/signup_page.html', {"form": form})
 
 
+#Log user out
 def logout_view(request):
     logout(request)
     messages.info(request, "You have been logged out.")
     return redirect('users:login')
 
+#User profile
 @login_required
 def profile(request):
     u = request.user    
@@ -74,3 +76,18 @@ def profile(request):
     else:
         form = UserForm(initial=initial_profile)
         return render(request, 'users/profile.html', {'form': form})
+
+#Disable account
+@login_required
+def disable(request):
+    #Disable account
+    if request.method == 'POST':
+        request.user.is_active = False
+        request.user.save()
+        logout(request)
+        messages.success(request, 'Account disabled.')
+        return redirect('users:login')
+
+    #Show confirmation
+    else:
+        return render(request, 'users/disable_page.html')

@@ -10,12 +10,18 @@
     {% endif %}
 {% endif %}
 
+{% if form.non_field_errors %}
+{% for error in form.non_field_errors %}
+{% include 'notification.html' with msg=error type='is-danger' %}
+{% endfor %}
+{% endif %}
+
 <div class="section">
-        <div class="container has-text-centered">
+        <div class="container has-text-centered mb-4">
             <p class="title">Log In</p>
         </div>
 
-        <div class="container" action="{% url 'users:login' %}">
+        <div class="box" action="{% url 'users:login' %}">
             <form method="post">
                 {% csrf_token %}
                 {% include 'forms/input.html' with field=form.username label='Username' %}

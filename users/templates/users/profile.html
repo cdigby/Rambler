@@ -1,18 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="section">
-        <div class="container has-text-centered">
+        <div class="container has-text-centered mb-4">
             <p class="title">{{ user.get_username }}'s Profile</p>
         </div>
 
-        <div class="container">
+        <div class="box">
             <form method="post">
                 {% csrf_token %}
                 {% include 'forms/input.html' with field=form.username label='Username' %}
                 {% include 'forms/input.html' with field=form.email label='Email' %}
                 {% include 'forms/input.html' with field=form.password label='Password' %}
                 {% include 'forms/input.html' with field=form.password_confirmation label='Confirm Password' %}
-                {% include 'forms/submit.html' with text='Save' %}
+                <div class="field is-grouped">
+                    <div class="control">
+                        <a href="{% url 'users:disable' %}" class="button is-danger">Disable Account</a>
+                    </div>
+                    <div class="control">
+                        <button class="button is-link">Save</button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
