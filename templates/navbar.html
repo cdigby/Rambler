@@ -1,0 +1,42 @@
+<nav class="navbar is-primary">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="{% url 'home' %}">Rambler</a>
+        <a class="navbar-burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </a>
+    </div>
+
+    <div class="navbar-menu">
+        <div class="navbar-start">
+            <a href="" class="navbar-item">Feed</a>
+            <a href="" class="navbar-item">Route Planner</a>
+        </div>
+
+        <div class="navbar-end">
+            {% if user.is_authenticated %}
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">Logged in as: {{ user.get_username }}</a>
+                <div class="navbar-dropdown">
+                    <a href="{% url 'users:profile' %}" class="navbar-item">Profile</a>
+                    <a href="" class="navbar-item">My Routes</a>
+                    <hr class="navbar-divider">
+                    <a class="navbar-item" href="{% url 'users:logout' %}">Log Out</a>
+                </div>
+            </div>
+
+            {% else %}
+            <a href="{% url 'users:login' %}" class="navbar-item">Log In</a>
+            <a href="{% url 'users:signup' %}" class="navbar-item">Sign Up</a>
+            {% endif %}
+        </div>
+
+    </div>
+</nav>
+
+{% if messages %}
+    {% for message in messages %}
+        {% include 'notification_helper.html' with msg=message %}
+    {% endfor %}
+{% endif %}
