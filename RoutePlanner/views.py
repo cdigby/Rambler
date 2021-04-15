@@ -34,7 +34,7 @@ def feed(request):
             # get model
             # change rating
             # save model
-        return HttpResponse("OK")
+        return HttpResponse("OK")g
 """
 def getRoutes(request):
     Routes =[]
