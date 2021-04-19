@@ -9,13 +9,14 @@ class Route(models.Model):
 
     def get_likes(self):
         try:
-            return len(Like.objects.get(pk=self.id).all)
+            #print (Like.objects.filter(pk=3))
+            return Like.objects.filter(route=self.id).count()
         except models.ObjectDoesNotExist:
             return 0;
 
     def get_dislikes(self):
         try:
-            return len(Dislike.objects.get(pk=self.id).all)
+            return Dislike.objects.filter(route=self.id).count()
         except models.ObjectDoesNotExist:
             return 0;
 
@@ -37,7 +38,24 @@ class Like(models.Model):
     user = models.IntegerField()
     route = models.IntegerField()
 
+    def create_like(self, route, user):
+        self.route = route
+        self.user = user
+
+    def save(self, *args, **kwargs):
+        super(Like, self).save(*args, **kwargs)
+        print("Saved like, Route", self.route, ", User: ", self.user)
+
 
 class Dislike(models.Model):
     user = models.IntegerField()
     route = models.IntegerField()
+
+    def create_dislike(self, route, user):
+        self.route = route
+        self.user = user
+
+    def save(self, *args, **kwargs):
+        super(Dislike, self).save(*args, **kwargs)
+        print("Saved dislike, Route", self.route, ", User: ", self.user)
+
