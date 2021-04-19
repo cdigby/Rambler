@@ -15,7 +15,8 @@ def display_feed(request):
         route = (jsonData['route'])
         if (function == "LIKE"):
             print("LIKE")
-            Dislike.objects.filter(route=route, user=request.user.id).delete()
+            remove_dislike(request.user.id, route)
+            #Dislike.objects.filter(route=route, user=request.user.id).delete()
             print(Dislike.objects.filter(route=route, user=request.user.id))
             if (validate_like(request, route)):
                 like = Like()
@@ -26,7 +27,8 @@ def display_feed(request):
                 print("Alredy Liked")
         elif (function == "DISLIKE"):
             print("DISLIKE")
-            Like.objects.filter(route=route, user=request.user.id).delete()
+            remove_like(request.user.id, route)
+            #Like.objects.filter(route=route, user=request.user.id).delete()
             print(Like.objects.filter(route=route, user=request.user.id))
             if (validate_dislike(request, route)):
                 dislike = Dislike()
@@ -58,10 +60,14 @@ def validate_like(request, route):
         if (likes == 0):
             return True
         else:
+            print("removing like")
+            remove_like(request.user.id, route)
             return False
     except models.ObjectDoesNotExist:
         return True;
 
+def remove_like(user, route):
+    Like.objects.filter(route=route, user=user).delete()
 
 def validate_dislike(request, route):
     try:
@@ -69,6 +75,10 @@ def validate_dislike(request, route):
         if (dislikes == 0):
             return True
         else:
+            remove_dislike(request.user.id, route)
             return False
     except models.ObjectDoesNotExist:
         return True;
+
+def remove_dislike(user, route):
+    Dislike.objects.filter(route=route, user=user).delete()
