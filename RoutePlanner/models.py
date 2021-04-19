@@ -14,7 +14,6 @@ class Route(models.Model):
     title = models.CharField(max_length=50, default="", validators=[validate_presence])
     description = models.TextField(max_length=450, default="", validators=[validate_presence])
     points = models.TextField(default="", validators=[validate_presence])
-    rating = models.IntegerField()
 
 
     def create_route(self, title, points):
