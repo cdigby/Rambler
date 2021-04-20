@@ -1,18 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
-    <head>
+    {% block scripts %}
         <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
-        <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet'/>
-
-        <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
         <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+    {% endblock scripts %}
+
+    {% block styles %}
         <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet'/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
               integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
               crossorigin="anonymous">
+        <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet'/>
+    {% endblock styles %}
 
-
-
+    {% block meta %}
+        <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    {% endblock meta %}
     </head>
     <body>
     {% csrf_token %}
@@ -47,11 +50,13 @@
         </div>
     </div>
 
+    <img id="mapimg">
+
     <script>
 
         //Constants:
         const saveRouteUrl = "";
-
+        fullRoute="";
 
         mapboxgl.accessToken = 'pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ';
         var map = new mapboxgl.Map({
@@ -93,6 +98,7 @@
                     var data = json.routes[0];
                     var route = data.geometry.coordinates;
                     console.log("Route: " + route);
+                    fullRoute=route;
                     var geojson = {
                         type: 'Feature',
                         properties: {},
@@ -216,6 +222,8 @@
 
             title = prompt("Give your route a name:", "My route");
 
+            generateMapImage(fullRoute);
+
             var xhr = new XMLHttpRequest();
 
             xhr.open("POST", "", false);
@@ -248,6 +256,13 @@
             points[0][1] = startMarker.getLngLat().lat;
             getRoute(points);
         }
+
+        function generateMapImage(route){
+            encodedRoute = encode_polyline(route);
+            console.log(encodedRoute);
+            document.getElementById("mapimg").setAttribute("src", "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/path(" + encodedRoute + ")/auto/300x200?access_token=pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ")
+        }
+
 
         endMarker.on('dragend', repositionEndMarker);
         startMarker.on('dragend', repositionStartMarker);
