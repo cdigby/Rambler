@@ -257,10 +257,41 @@
             getRoute(points);
         }
 
+        function encodeCoords(coords){
+            return ([encodePoint(coords[0]), encodePoint(coords[1])])
+        }
+
+        function encodePoint(point){
+            point = point*1e5;
+            neg = (point < 0);
+            console.log("Mult: " + point);
+            /*if (point < 0){
+                console.log("-ve");
+                point = ~point;
+            }*/
+            //console.log("Inverted: " + point);
+            point = point << 1;
+            console.log(point);
+            if (neg){
+                point = ~point;
+            }
+
+
+
+
+        }
+
         function generateMapImage(route){
-            encodedRoute = encode_polyline(route);
-            console.log(encodedRoute);
-            document.getElementById("mapimg").setAttribute("src", "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/path(" + encodedRoute + ")/auto/300x200?access_token=pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ")
+            console.log(JSON.stringify(route));
+            /*for (i = 0; i < route.length; i++){
+                encodeCoords(route[i]);
+            }*/
+            encodeCoords(route[0]);
+            //encodedRoute = encode_polyline(route);
+            //encodedRoute = encode_polyline([[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]]);
+            //console.log("https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/path(" + encodedRoute + ")/auto/300x200?access_token=pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ");
+            document.getElementById("mapimg").setAttribute("src", "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/path(" + encodedRoute + ")/-0.5662,51.2309,10.81,0/300x200?access_token=pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ")
+            //https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/path(%7DvtwHdrsBw%40sQi%40%5BaA_i%40c%40%7DFmB_IaFcN_M%7BNs%40iDHwAk%40YQaDUqCAGAIkEa%5EqAcEmGaXoDqEqEcDcIyDmPwPQVcKeV)/auto/300x200?access_token=pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ
         }
 
 
