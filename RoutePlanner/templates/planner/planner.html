@@ -57,6 +57,7 @@
         //Constants:
         const saveRouteUrl = "";
         fullRoute="";
+        GEOJSONRoute = "";
 
         mapboxgl.accessToken = 'pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ';
         var map = new mapboxgl.Map({
@@ -107,6 +108,7 @@
                             coordinates: route
                         }
                     };
+                    //GEOJSONRoute = geojson;
                     //Get Instructions:
                     var instructions = document.getElementById('instructions');
                     var steps = data.legs[0].steps;
@@ -118,10 +120,12 @@
                     }
                     // if the route already exists on the map, reset it using setData
                     if (map.getSource('route')) {
+                        GEOJSONRoute = req.response;
                         map.getSource('route').setData(geojson);
                         //update the position of the end marker to new end of route
                         endMarker.setLngLat(points[points.length - 1]);
                         console.log("Set Data");
+                        //GEOJSONRoute = geojson;
                     } else { // otherwise, make a new request
                         console.log("New Layer");
                         map.addLayer({
@@ -149,6 +153,8 @@
                             }
                         });
                         map.getSource('route').setData(geojson);
+                        //GEOJSONRoute = geojson;
+                        console.log(geojson);
                         console.log("Set Data after New Layer");
                         //Add the end marker to the map for the first time
                         endMarker
@@ -282,15 +288,26 @@
         }
 
         function generateMapImage(route){
-            console.log(JSON.stringify(route));
+
+            JSONFormat = { "type": "Feature",
+                              "geometry": {
+                                "type": "LineString",
+                                "coordinates": route,
+                              },
+                              "properties": {}
+                            };
+
+            //console.log(JSON.stringify(route));
             /*for (i = 0; i < route.length; i++){
                 encodeCoords(route[i]);
             }*/
             encodeCoords(route[0]);
             //encodedRoute = encode_polyline(route);
+            console.log(JSONFormat);
             //encodedRoute = encode_polyline([[38.5, -120.2], [40.7, -120.95], [43.252, -126.453]]);
             //console.log("https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/path(" + encodedRoute + ")/auto/300x200?access_token=pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ");
-            document.getElementById("mapimg").setAttribute("src", "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/path(" + encodedRoute + ")/-0.5662,51.2309,10.81,0/300x200?access_token=pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ")
+            //document.getElementById("mapimg").setAttribute("src", "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/geojson(" + JSONFormat + ")/-0.5662,51.2309,10.81,0/300x200?access_token=pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ")
+            console.log("https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/geojson(" + JSONFormat + ")/-0.5662,51.2309,10.81,0/300x200?access_token=pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ")
             //https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/path(%7DvtwHdrsBw%40sQi%40%5BaA_i%40c%40%7DFmB_IaFcN_M%7BNs%40iDHwAk%40YQaDUqCAGAIkEa%5EqAcEmGaXoDqEqEcDcIyDmPwPQVcKeV)/auto/300x200?access_token=pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ
         }
 
