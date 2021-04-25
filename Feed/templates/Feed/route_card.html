@@ -1,5 +1,12 @@
 <div class="card">
-    <p> Title: {{ route.title }}</p>
+    <header class="card-header">
+        <p class="card-header-title">{{ route.title }}</p>
+    </header>
+    <div class="card-image">
+        <figure class="image is-3by2">
+            <img class="map-img" data-route="{{ route.points }}" src="" width="300" height="200">
+        </figure>      
+    </div>
     <p> Description: {{ route.description }}</p>
     <p> Points: {{ route.points }}</p>
     <p> Rating: {{ route.rating }}</p>

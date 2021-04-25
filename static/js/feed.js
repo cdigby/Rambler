@@ -1,22 +1,12 @@
 $(() => {
-    
+    //FIX THIS
 
-    //For all maps generate image once page loaded
+    //Load map images
+    $('.map-img').each(() => {
+        url = generateMapImageUrl($(this).attr('data-route')) 
+        $(this).attr("src", url)
+    })
 })
-
-function generateMapImage(id, route){
-
-    JSONFormat = JSON.stringify({ "type": "Feature",
-                      "geometry": {
-                        "type": "LineString",
-                        "coordinates": route,
-                      },
-                      "properties": {}
-                    });
-    
-    url = "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/geojson(" + JSONFormat + ")/-0.5662,51.2309,10.81,0/300x200?access_token=pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ"
-    $("map-" + String(id)).attr("src", url)
-}
 
 function getCookie(name) {
     let cookieValue = null;
