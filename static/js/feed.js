@@ -1,10 +1,7 @@
 $(() => {
-    //FIX THIS
-
     //Load map images
-    $('.map-img').each(() => {
-        url = generateMapImageUrl($(this).attr('data-route')) 
-        $(this).attr("src", url)
+    $('.map-img').each(function() {
+        $(this).attr("src", generateMapImageUrl($(this).data('points')))
     })
 })
 
@@ -39,6 +36,25 @@ function like(route){
         function: "LIKE",
         route: route
     }));
+
+    //$.ajax({
+    //    type: 'POST',
+    //    url: '',
+    //    data: {"nick_name": nick_name},
+    //    success: function (response) {
+    //        if(!response["valid"]){
+    //            alert("You cannot create a friend with same nick name");
+    //            var nickName = $("#id_nick_name");
+    //            nickName.val("")
+    //            nickName.focus()
+    //        }
+    //    },
+    //})
+
+    //Update counter
+    el = $('#rating-' + route)
+    el.text(parseInt(el.text()) + 1)
+    
 }
 
 function dislike(route){
@@ -54,4 +70,8 @@ function dislike(route){
         function: "DISLIKE",
         route: route
     }));
+
+    //Update counter
+    el = $('#rating-' + route)
+    el.text(parseInt(el.text()) - 1)
 }
