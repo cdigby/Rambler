@@ -22,37 +22,44 @@
         <nav class="level">
             <div class="level-left">
                 <div class="level-item">
-                <p class="subtitle is-5">
-                    <strong>123</strong> routes
-                </p>
+                    <p class="subtitle is-5">
+                        <strong>{{ count }}</strong> routes
+                    </p>
                 </div>
 
                 <div class="level-item">
                     <form method="get">
                     <div class="field has-addons">
 
-                        <p class="control">
-                        <input name="query" class="input" type="text" placeholder="Find a route">
-                        </p>
+                        <div class="control is-expanded">
+                            <input name="query" class="input" type="text" placeholder="Find a route" value="{{ query }}">
+                        </div>
 
-                        <p class="control">
-                        <span class="select">
-                        <select name="type">
-                            <option value="allroutes">Routes - All</option>
-                            <option value="bestroutes">Routes - Popular</option>
-                            <option value="newroutes">Routes - Latest</option>
-                            <option value="alltags">Tags - All</option>
-                            <option value="besttags">Tags - Popular</option>
-                            <option value="newtags">Tags - Latest</option>
-                        </select>
-                        </span>
-                        </p>
+                        <div class="control">
+                            <span class="select">
+                            <select name="target">
+                                <option value="routes" {% if target == 'routes' %}selected{% endif %}>Routes</option>
+                                <option value="tags"{% if target == 'tags' %}selected{% endif %}>Tags</option>
+                                <option value="users"{% if target == 'users' %}selected{% endif %}>Users</option>
+                            </select>
+                            </span>
+                        </div>
 
-                        <p class="control">
-                        <button class="button">
-                            Search
-                        </button>
-                        </p>
+                        <div class="control">
+                            <span class="select">
+                            <select name="sort">
+                                <option value="all" {% if sort == 'all' %}selected{% endif %}>All</option>
+                                <option value="top" {% if sort == 'top' %}selected{% endif %}>Popular</option>
+                                <option value="new" {% if sort == 'new' %}selected{% endif %}>Latest</option>
+                            </select>
+                            </span>
+                        </div>
+
+                        <div class="control">
+                            <button class="button">
+                                Search
+                            </button>
+                        </div>
 
                     </div>
                     </form>
@@ -60,10 +67,18 @@
             </div>
 
             <div class="level-right">
-                <p class="level-item"><strong>All:</strong></p>
-                <p class="level-item"><a href="">Latest<a/></p>
-                <p class="level-item"><a>Most Popular</a></p>
-                <p class="level-item"><a href="{% url 'RoutePlanner:route-planner' %}" class="button is-success">New Route</a></p>
+                <div class="level-item">
+                    <strong>All:</strong>
+                </div>
+                <div class="level-item">
+                    <a href="{% url 'Feed:feed' %}?showall=new">Latest<a/>
+                </div>
+                <div class="level-item">
+                    <a href="{% url 'Feed:feed' %}?showall=top">Most Popular</a>
+                </div>
+                <div class="level-item">
+                    <a href="{% url 'RoutePlanner:route-planner' %}" class="button is-success">New Route</a>
+                </div>
             </div>
         </nav>
 

@@ -39,25 +39,73 @@ def display_feed(request):
             else:
                 print("Already Disliked")
         return HttpResponse("OK")
+
+    #Show latest routes by default otherwise show depending on search query
     else:
-        routes = []
-        count = Route.objects.all().count()
-        if count != 0:
-            for i in range(1, count + 1):
-                print(i)
-                route = Route.objects.get(pk=i)
-                route_info = {
-                    'title': route.title,
-                    'description': route.description,
-                    'points': route.points,
-                    'rating': route.get_rating(),
-                    'id': route.id,
-                    'user': User.objects.get(pk=route.user).username,
-                }
-                routes.append(route_info)
+        #Handle requests for all routes sorted first
+        if 'showall' in request.GET:
+            sort = request.GET['showall']
+            if sort == 'top' or sort ==  'new':
+                return search_routes(request, '', 'routes', sort)
 
-        return render(request, 'Feed/Feed.html', {'routes': routes})
+        #Check query exists and is not blank
+        if 'query' in request.GET:
+            #Search routes
+            if request.GET['query'] != '':
+                query = request.GET['query']
+                target = request.GET['target']
+                sort = request.GET['sort']
+                return search_routes(request, query, target, sort)
+                
+            #Empty query, treat as default
+            else:
+                return default_routes(request)
 
+        #Display default
+        else:
+            return default_routes(request)
+
+#Render default routes
+def default_routes(request):
+    return search_routes(request, '', 'routes', 'new')
+
+#Render searched routes
+def search_routes(request, query, target, sort):
+    #Default routes
+
+
+    #Search routes
+
+
+
+    #Sort routes
+
+
+    #Return
+
+
+
+
+
+
+
+    routes = []
+    count = Route.objects.all().count()
+    if count != 0:
+        for i in range(1, count + 1):
+            print(i)
+            route = Route.objects.get(pk=i)
+            route_info = {
+                'title': route.title,
+                'description': route.description,
+                'points': route.points,
+                'rating': route.get_rating(),
+                'id': route.id,
+                'user': User.objects.get(pk=route.user).username,
+            }
+            routes.append(route_info)
+    
+    return render(request, 'Feed/Feed.html', {'routes': routes, 'query': query, 'target': target, 'sort': sort, 'count': len(routes)})
 
 def validate_like(request, route):
     try:
