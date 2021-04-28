@@ -1,5 +1,15 @@
 $(() => {
-    //Load map images
+    //Highlight links for sorting all routes after selection
+    let sp = new URLSearchParams(window.location.search)
+    if (sp.has('showall')) {
+        param = sp.get('showall')
+        if (param === 'new') {$('#allnew').addClass('has-text-weight-bold')}
+        if (param === 'old') {$('#allold').addClass('has-text-weight-bold')}
+        if (param === 'top') {$('#alltop').addClass('has-text-weight-bold')}
+    }
+    if (Array.from(sp).length === 0) {$('#allnew').addClass('has-text-weight-bold')}
+
+    //Load map images (Do last so nothing else is waiting)
     $('.map-img').each(function() {
         $(this).attr("src", generateMapImageUrl($(this).data('points')))
     })
