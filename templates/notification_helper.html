@@ -1,0 +1,16 @@
+{% if msg.tags %}
+    {% if msg.tags == 'debug' %}
+        {% include 'notification.html' with type='is-info is-light' %}
+    {% elif msg.tags == 'info' %}
+        {% include 'notification.html' with type='is-info' %}
+    {% elif msg.tags == 'success' %}
+        {% include 'notification.html' with type='is-success' %}
+    {% elif msg.tags == 'warning'%}
+        {% include 'notification.html' with type='is-warning' %}
+    {% elif msg.tags == 'error' %}
+        {% include 'notification.html' with type='is-danger' %}
+    {% endif %}
+
+{% else %}
+    {% include 'notification.html' with type='is-info' %}
+{% endif %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    {% include 'notification.html' with msg='Your account does not have access to this page' type='is-danger' %}
+    {% else %}
+    {% include 'notification.html' with msg='You must be logged in to access this page' type='is-danger' %}
+    {% endif %}
+{% endif %}
+
+{% if form.non_field_errors %}
+{% for error in form.non_field_errors %}
+{% include 'notification.html' with msg=error type='is-danger' %}
+{% endfor %}
+{% endif %}
+
+<div class="section">
+        <div class="container has-text-centered mb-4">
+            <p class="title">Log In</p>
+        </div>
+
+        <div class="box" action="{% url 'users:login' %}">
+            <form method="post">
+                {% csrf_token %}
+                {% include 'forms/input.html' with field=form.username label='Username' %}
+                {% include 'forms/input.html' with field=form.password label='Password' %}
+                {% include 'forms/submit.html' with text='Log In' %}
+                <input type="hidden" name="next" value="{{ next }}">
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
