@@ -40,6 +40,7 @@
                             <select name="target">
                                 <option value="routes" {% if target == 'routes' %}selected{% endif %}>Routes</option>
                                 <option value="tags"{% if target == 'tags' %}selected{% endif %}>Tags</option>
+                                <option value="description"{% if target == 'description' %}selected{% endif %}>Description</option>
                                 <option value="users"{% if target == 'users' %}selected{% endif %}>Users</option>
                             </select>
                             </span>
@@ -48,9 +49,9 @@
                         <div class="control">
                             <span class="select">
                             <select name="sort">
-                                <option value="all" {% if sort == 'all' %}selected{% endif %}>All</option>
-                                <option value="top" {% if sort == 'top' %}selected{% endif %}>Popular</option>
                                 <option value="new" {% if sort == 'new' %}selected{% endif %}>Latest</option>
+                                <option value="old" {% if sort == 'old' %}selected{% endif %}>Oldest</option>
+                                <option value="top" {% if sort == 'top' %}selected{% endif %}>Popular</option>
                             </select>
                             </span>
                         </div>
@@ -74,6 +75,9 @@
                     <a href="{% url 'Feed:feed' %}?showall=new">Latest<a/>
                 </div>
                 <div class="level-item">
+                    <a href="{% url 'Feed:feed' %}?showall=old">Oldest<a/>
+                </div>
+                <div class="level-item">
                     <a href="{% url 'Feed:feed' %}?showall=top">Most Popular</a>
                 </div>
                 <div class="level-item">
@@ -84,8 +88,23 @@
 
 
         {# Display cards #}
-        {% for route in routes %}
-            {% include 'Feed/route_card.html' with route=route %}
-        {% endfor %}
+        <div class="container">
+            {% for r1, r2 in routes %}
+                <div class="tile is-ancestor">
+                    <div class="tile is-parent">
+                        <div class="tile is-child">
+                            {% include 'Feed/route_card.html' with route=r1 %}
+                        </div>
+                    </div>
+                    <div class="tile is-parent">
+                        <div class="tile is-child">
+                            {% if r2 != None %}
+                            {% include 'Feed/route_card.html' with route=r2 %}
+                            {% endif %}   
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

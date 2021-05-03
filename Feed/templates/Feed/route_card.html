@@ -1,17 +1,23 @@
-<div class="card mb-5">
+<div class="card mb-5 route-card">
     <header class="card-header">
         <p class="card-header-title">{{ route.title }}</p>
     </header>
-    <div class="card-image">
-        <figure class="map-img-container image is-3by2">
-            <img class="map-img" data-id="{{ route.id }}" data-points="{{ route.points }}" src="" width="600" height="400">
+    <div class="card-image map-thumb">
+        <figure class="map-thumb image is-3by2">
+            <img class="map-img map-thumb" data-id="{{ route.id }}" data-points="{{ route.points }}" src="" width="600" height="400">
         </figure>      
     </div>
     <div class="card-content">
 
-            <p>by <strong>{{ route.user }}</strong></p>
+            <p>by <strong>{{ route.user }}</strong> {{ route.date }} ago</p>
             <p>{{ route.description }}</p>
-
+            <p>
+                {% for tag in route.tags %}
+                    <span class="tag is-info">
+                        {{ tag }}
+                    </span>
+                {% endfor %}
+            </p>
     </div>
     
     <footer class="card-footer">

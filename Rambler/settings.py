@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.postgres',
     'users.apps.UsersConfig',
     'home.apps.HomeConfig',
     'Feed',
@@ -131,4 +132,4 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_URL = 'users:login'
-LOGIN_REDIRECT_URL = 'users:profile'
+LOGIN_REDIRECT_URL = 'Feed:feed'

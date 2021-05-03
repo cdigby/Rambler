@@ -22,56 +22,31 @@ function getCookie(name) {
 }
 
 function like(route){
-    var xhr = new XMLHttpRequest();
-
-    console.log("Like")
-    xhr.open("POST", "", false);
-    xhr.withCredentials = true;
-
-    xhr.setRequestHeader('X-CSRFToken', Cookies.get('csrftoken'));
-    xhr.setRequestHeader("Accept", "application/json");
-
-    console.log(route);
-    xhr.send(JSON.stringify({
-        function: "LIKE",
-        route: route
-    }));
-
-    //$.ajax({
-    //    type: 'POST',
-    //    url: '',
-    //    data: {"nick_name": nick_name},
-    //    success: function (response) {
-    //        if(!response["valid"]){
-    //            alert("You cannot create a friend with same nick name");
-    //            var nickName = $("#id_nick_name");
-    //            nickName.val("")
-    //            nickName.focus()
-    //        }
-    //    },
-    //})
-
-    //Update counter
-    el = $('#rating-' + route)
-    el.text(parseInt(el.text()) + 1)
-    
+    $.ajax({
+        type: 'POST',
+        url: '',
+        headers: {
+            'X-CSRFToken': Cookies.get('csrftoken')
+        },
+        data: {"function": "LIKE", "route": route},
+        success: function (response) {
+            el = $('#rating-' + route)
+            el.text(parseInt(response["rating"]))
+        },
+    })
 }
 
 function dislike(route){
-    var xhr = new XMLHttpRequest();
-    console.log("Dislike")
-    xhr.open("POST", "", false);
-    xhr.withCredentials = true;
-
-    xhr.setRequestHeader('X-CSRFToken', Cookies.get('csrftoken'));
-    xhr.setRequestHeader("Accept", "application/json");
-
-    xhr.send(JSON.stringify({
-        function: "DISLIKE",
-        route: route
-    }));
-
-    //Update counter
-    el = $('#rating-' + route)
-    el.text(parseInt(el.text()) - 1)
+    $.ajax({
+        type: 'POST',
+        url: '',
+        headers: {
+            'X-CSRFToken': Cookies.get('csrftoken')
+        },
+        data: {"function": "DISLIKE", "route": route},
+        success: function (response) {
+            el = $('#rating-' + route)
+            el.text(parseInt(response["rating"]))
+        },
+    })
 }

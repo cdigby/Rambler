@@ -34,8 +34,9 @@ def routePlanner(request):
         desc = (jsonData['description'])
         length = (jsonData['length'])
         image = (jsonData['image'])
+        tags = (jsonData['tags'])
         route = Route()
-        route.create_route(title, points, desc, length, image, request.user.id)
+        route.create_route(title, points, desc, length, image, request.user.id, tags)
         route.save()
 
         return HttpResponse("OK")
