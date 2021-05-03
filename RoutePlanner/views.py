@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import json
 import RoutePlanner
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -20,18 +21,21 @@ def showRoute(request):
     route1.printRoute()
     return render(request, 'planner/view.html', {'route': route})
 
+
+@login_required
 def routePlanner(request):
     if request.method == 'GET':
         return render(request, 'planner/planner.html')
     elif request.method == 'POST':
         jsonData = json.loads(request.body.decode())
         title = (jsonData['title'])
+        desc = (jsonData['desc'])
         points = (jsonData['points'])
-        description = (jsonData['description'])
+        desc = (jsonData['description'])
         length = (jsonData['length'])
         image = (jsonData['image'])
         route = Route()
-        route.create_route(title, points, description, length, image)
+        route.create_route(title, points, desc, length, image, request.user.id)
         route.save()
 
         return HttpResponse("OK")

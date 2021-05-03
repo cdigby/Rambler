@@ -6,28 +6,29 @@ class Route(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
     points = models.TextField()
+    user = models.IntegerField()
 
     def get_likes(self):
         try:
             #print (Like.objects.filter(pk=3))
             return Like.objects.filter(route=self.id).count()
         except models.ObjectDoesNotExist:
-            return 0;
+            return 0
 
     def get_dislikes(self):
         try:
             return Dislike.objects.filter(route=self.id).count()
         except models.ObjectDoesNotExist:
-            return 0;
+            return 0
 
     def get_rating(self):
-
         return self.get_likes() - self.get_dislikes()
 
-    def create_route(self, title, desc, points):
+    def create_route(self, title, desc, points, user):
         self.title = title
         self.description = desc
         self.points = points
+        self.user = user
 
     def save(self, *args, **kwargs):
         super(Route, self).save(*args, **kwargs)

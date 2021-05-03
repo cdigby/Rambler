@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Route, Like, Dislike
 from django.db import models
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
 
 import json
 from django.http import HttpResponse
@@ -51,6 +52,7 @@ def display_feed(request):
                     'points': route.points,
                     'rating': route.get_rating(),
                     'id': route.id,
+                    'user': User.objects.get(pk=route.user).username,
                 }
                 routes.append(route_info)
 
