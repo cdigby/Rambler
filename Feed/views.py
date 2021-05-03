@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from .models import Route, Like, Dislike
+from .models import Like, Dislike
+from RoutePlanner.models import Route
 from django.db import models
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
@@ -73,6 +74,7 @@ def default_routes(request):
 def search_routes(request, query, target, sort):
     arr = []
     formatted_arr = []
+    count = 0
     #Check db not empty
     if Route.objects.all().count() != 0:
         #All routes if no query

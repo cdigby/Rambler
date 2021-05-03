@@ -3,6 +3,7 @@ from django.contrib.postgres.fields import ArrayField
 
 
 # Create your models here.
+'''
 class Route(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
@@ -42,7 +43,7 @@ class Route(models.Model):
 
     def save(self, *args, **kwargs):
         super(Route, self).save(*args, **kwargs)
-
+'''
 
 class Like(models.Model):
     user = models.IntegerField()
