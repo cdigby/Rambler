@@ -10,7 +10,6 @@ from .models import Route
 
 
 def showRoute(request):
-
     route1 = Route.objects.get(pk=90)
     print("Points" + route1.points);
     route = {
