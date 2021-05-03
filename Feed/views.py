@@ -24,7 +24,7 @@ def display_feed(request):
                 like.save()
 
             else:
-                print("Alredy Liked")
+                print("Already Liked")
         elif (function == "DISLIKE"):
             print("DISLIKE")
             remove_like(request.user.id, route)
@@ -36,20 +36,23 @@ def display_feed(request):
                 dislike.save()
 
             else:
-                print("Alredy Disliked")
+                print("Already Disliked")
         return HttpResponse("OK")
     else:
         routes = []
-        for i in range (1, Route.objects.all().count()):
-            route = Route.objects.get(pk=i)
-            route_info = {
-                'title': route.title,
-                'description': route.description,
-                'points': route.points,
-                'rating': route.get_rating(),
-                'id': route.id,
-            }
-            routes.append(route_info)
+        count = Route.objects.all().count()
+        if count != 0:
+            for i in range(1, count + 1):
+                print(i)
+                route = Route.objects.get(pk=i)
+                route_info = {
+                    'title': route.title,
+                    'description': route.description,
+                    'points': route.points,
+                    'rating': route.get_rating(),
+                    'id': route.id,
+                }
+                routes.append(route_info)
 
         return render(request, 'Feed/Feed.html', {'routes': routes})
 
@@ -64,7 +67,7 @@ def validate_like(request, route):
             remove_like(request.user.id, route)
             return False
     except models.ObjectDoesNotExist:
-        return True;
+        return True
 
 def remove_like(user, route):
     Like.objects.filter(route=route, user=user).delete()
@@ -78,7 +81,7 @@ def validate_dislike(request, route):
             remove_dislike(request.user.id, route)
             return False
     except models.ObjectDoesNotExist:
-        return True;
+        return True
 
 def remove_dislike(user, route):
     Dislike.objects.filter(route=route, user=user).delete()

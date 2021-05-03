@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import json
-from . import models
 import RoutePlanner
 
 
@@ -11,7 +10,6 @@ from .models import Route
 
 def showRoute(request):
     route1 = Route.objects.get(pk=90)
-    print("Points" + route1.points);
     route = {
         'title': route1.title,
         'description': route1.description,
@@ -32,10 +30,9 @@ def routePlanner(request):
         description = (jsonData['description'])
         length = (jsonData['length'])
         image = (jsonData['image'])
-        route = models.Route()
+        route = Route()
         route.create_route(title, points, description, length, image)
         route.save()
-        print(models.Route.objects.all()[0].pk)
 
         return HttpResponse("OK")
 """
@@ -58,14 +55,14 @@ def feed(request):
 """
 def getRoutes(request):
     Routes =[]
-    num_of_routes = models.Route.objects.all().count()
+    num_of_routes = Route.objects.all().count()
     print(num_of_routes)
     for i in range (num_of_routes):
-        print(models.Route.objects.get(pk=1).title)
+        print(Route.objects.get(pk=1).title)
 
         #Routes.append({
 
-         #   'title': models.Route.objects.get(pk=1).title
+         #   'title': Route.objects.get(pk=1).title
 
         #})
     return HttpResponse("OK")
