@@ -8,12 +8,16 @@
     <textarea id="log" cols="80" rows="10"></textarea><br>
     <input id="chat_input" type="text" size="75"><br>
     <input id="chat_submit" type="button" value="Send">
+
+    {{ request.user.username|json_script:"user_username" }}
     {{ room_name|json_script:"room-name" }}
+
     <script>
     //var dt = new Date();
     //document.getElementById('date-time').innerHTML=dt;
-    
+
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        const user_username = JSON.parse(document.getElementById('user_username').textContent);
 
         const chatSocket = new WebSocket(
             'ws://'
@@ -25,7 +29,7 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#log').value += (data.message + '\n');
+            document.querySelector('#log').value += (data.username + ":" + data.message + '\n');
         };
 
         chatSocket.onclose = function(e) {
@@ -44,7 +48,8 @@
             const message = messageInputDom.value;
           //  const timeStamp = dt;
             chatSocket.send(JSON.stringify({
-                'message': message
+                'message': message,
+                'username': user_username,
               //  'timeStamp': timeStamp,
             }));
             messageInputDom.value = '';

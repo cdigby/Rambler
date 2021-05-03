@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="section">
+    <div class="container has-text-centered mb-4">
+        <p class="title">Are you sure you want to disable your account?</p>
+    </div>
+
+    <div class="box">           
+        <form method="post">
+        {% csrf_token %}
+            <div class="field is-grouped is-grouped-centered">
+                <div class="control">
+                    <a href="{% url 'users:profile' %}" class="button is-light">Cancel</a>
+                </div>
+                <div class="control">
+                    <button class="button is-danger">Disable Account</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+{% endblock content %}
+
