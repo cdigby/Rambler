@@ -26,7 +26,14 @@
                 {% csrf_token %}
                 {% include 'forms/input.html' with field=form.username label='Username' %}
                 {% include 'forms/input.html' with field=form.password label='Password' %}
-                {% include 'forms/submit.html' with text='Log In' %}
+                <div class="field is-grouped">
+                    <div class="control">
+                        <a href="{% url 'users:signup' %}" class="button is-light">Sign Up</a>
+                    </div>
+                    <div class="control">
+                        <button class="button is-link">Log In</button>
+                    </div>
+                </div>
                 <input type="hidden" name="next" value="{{ next }}">
             </form>
         </div>

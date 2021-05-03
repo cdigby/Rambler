@@ -16,6 +16,18 @@ $(() => {
     
 })
 
+function generateMapImageUrl(route){
+    JSONFormat = JSON.stringify({ "type": "Feature",
+                      "geometry": {
+                        "type": "LineString",
+                        "coordinates": route,
+                      },
+                      "properties": {}
+                    });
+    
+    return  "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/geojson(" + JSONFormat + ")/-0.5662,51.2309,10.81,0/600x400?access_token=pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ"
+}
+
 //Functions for encoding polylines for mapbox (taken from https://github.com/mapbox/polyline)
 function py2_round(value) {
     // Google's polyline algorithm uses the same rounding strategy as Python 2, which is different from JS for negative values

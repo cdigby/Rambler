@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import json
-from . import models
 import RoutePlanner
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -11,7 +11,6 @@ from .models import Route
 
 def showRoute(request):
     route1 = Route.objects.get(pk=90)
-    print("Points" + route1.points);
     route = {
         'title': route1.title,
         'description': route1.description,
@@ -22,6 +21,8 @@ def showRoute(request):
     route1.printRoute()
     return render(request, 'planner/view.html', {'route': route})
 
+
+@login_required
 def routePlanner(request):
     if request.method == 'GET':
         return render(request, 'planner/planner.html')
@@ -29,13 +30,13 @@ def routePlanner(request):
         jsonData = json.loads(request.body.decode())
         title = (jsonData['title'])
         points = (jsonData['points'])
-        description = (jsonData['description'])
+        desc = (jsonData['description'])
         length = (jsonData['length'])
         image = (jsonData['image'])
-        route = models.Route()
-        route.create_route(title, points, description, length, image)
+        tags = (jsonData['tags'])
+        route = Route()
+        route.create_route(title, points, desc, length, image, request.user.id, tags)
         route.save()
-        print(models.Route.objects.all()[0].pk)
 
         return HttpResponse("OK")
 """
@@ -58,14 +59,14 @@ def feed(request):
 """
 def getRoutes(request):
     Routes =[]
-    num_of_routes = models.Route.objects.all().count()
+    num_of_routes = Route.objects.all().count()
     print(num_of_routes)
     for i in range (num_of_routes):
-        print(models.Route.objects.get(pk=1).title)
+        print(Route.objects.get(pk=1).title)
 
         #Routes.append({
 
-         #   'title': models.Route.objects.get(pk=1).title
+         #   'title': Route.objects.get(pk=1).title
 
         #})
     return HttpResponse("OK")

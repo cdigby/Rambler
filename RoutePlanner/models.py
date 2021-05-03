@@ -1,5 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from Feed.models import Like, Dislike
+from django.contrib.postgres.fields import ArrayField
 
 
 def validate_presence(attribute):
@@ -31,13 +33,20 @@ class Route(models.Model):
     points = models.TextField(default="", validators=[validate_presence])
     length = models.FloatField(default=0.0, validators=[validate_length])
     image = models.CharField(max_length=2048, default="")
+    user = models.IntegerField()
+    date = models.DateTimeField(auto_now_add=True)
+    tags = ArrayField(models.CharField(max_length=50, blank=True))
+    rating = models.IntegerField()
 
-    def create_route(self, title, points, description, length, image):
+    def create_route(self, title, points, description, length, image, user, tags):
         self.title = title
         self.points = points
         self.description = description
         self.image = image
         self.length = length
+        self.user = user
+        self.tags = tags.lower().split()
+        self.rating = 0
         print(self.length)
 
     def printRoute(self):
@@ -47,3 +56,23 @@ class Route(models.Model):
         self.full_clean()
         super(Route, self).save(*args, **kwargs)
         print("Saved route: ", self.title, ", Desc: ", self.description, " with points: ", self.points)
+
+    def get_likes(self):
+        try:
+            #print (Like.objects.filter(pk=3))
+            return Like.objects.filter(route=self.id).count()
+        except models.ObjectDoesNotExist:
+            return 0
+
+    def get_dislikes(self):
+        try:
+            return Dislike.objects.filter(route=self.id).count()
+        except models.ObjectDoesNotExist:
+            return 0
+
+    def get_rating(self):
+        return self.get_likes() - self.get_dislikes()
+
+    def update_rating(self):
+        self.rating = self.get_rating()
+        self.save()

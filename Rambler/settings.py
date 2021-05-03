@@ -30,15 +30,17 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'RoutePlanner.apps.RouteplannerConfig',
+    'RoutePlanner.apps.RoutePlannerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.postgres',
     'users.apps.UsersConfig',
-    'home.apps.HomeConfig'
+    'home.apps.HomeConfig',
+    'Feed',
 ]
 
 MIDDLEWARE = [
@@ -130,4 +132,4 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_URL = 'users:login'
-LOGIN_REDIRECT_URL = 'users:profile'
+LOGIN_REDIRECT_URL = 'Feed:feed'

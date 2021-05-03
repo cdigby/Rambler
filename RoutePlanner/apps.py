@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class RouteplannerConfig(AppConfig):
+class RoutePlannerConfig(AppConfig):
     name = 'RoutePlanner'
