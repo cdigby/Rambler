@@ -1,0 +1,10 @@
+<div class="card">
+    <p> Title: {{ route.title }}</p>
+    <p> Description: {{ route.description }}</p>
+    <p> Points: {{ route.points }}</p>
+    <p> Rating: {{ route.rating }}</p>
+    <p> Id: {{ route.id }}</p>
+    <p> User: {{ route.user }}</p>
+    <button name="Like" onclick="like({{ route.id }})">Like</button>
+    <button name="Like" onclick="dislike({{ route.id }})">Dislike</button>
+</div>
