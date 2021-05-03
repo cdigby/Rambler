@@ -29,7 +29,6 @@ def routePlanner(request):
     elif request.method == 'POST':
         jsonData = json.loads(request.body.decode())
         title = (jsonData['title'])
-        desc = (jsonData['desc'])
         points = (jsonData['points'])
         desc = (jsonData['description'])
         length = (jsonData['length'])

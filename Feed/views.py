@@ -167,7 +167,6 @@ def validate_like(request, route):
         if (likes == 0):
             return True
         else:
-            print("removing like")
             remove_like(request.user.id, route)
             return False
     except models.ObjectDoesNotExist:

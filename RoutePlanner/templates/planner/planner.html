@@ -48,8 +48,9 @@
                 <div class="row">
                     <div id="dataEntry", class="">
                         <p id="errors"></p>
-                        <input id="titleBox",type="text", placeholder="Give your route a title...">
-                        <br><input id="descriptionBox", type="text", placeholder="Tell us about your route!">
+                        <input id="titleBox" type="text" placeholder="Give your route a title...">
+                        <br><input id="descriptionBox" type="text" placeholder="Tell us about your route!">
+                        <br><input id="tagsBox" type="text" placeholder="Give your route some tags...">
                     </div>
                 </div>
                 <div class="row">
@@ -278,7 +279,8 @@
                     title: document.getElementById("titleBox").value,
                     description: document.getElementById("descriptionBox").value,
                     length: calculateLength(),
-                    image: generateMapImage(fullRoute)
+                    image: generateMapImage(fullRoute),
+                    tags: document.getElementById("tagsBox").value
                 }));
             }
 
