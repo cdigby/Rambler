@@ -24,12 +24,13 @@ SECRET_KEY = ')o_%bjn=5ocso_aakt0$7dcl-c^23o1x%ygyif)!#j@hhf&amc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0']
+#ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'RoutePlanner.apps.RoutePlannerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,8 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'chat',
     'channels',
+    'django.contrib.postgres',
     'users.apps.UsersConfig',
-    'home.apps.HomeConfig'
+    'home.apps.HomeConfig',
+    'Feed',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +145,4 @@ STATICFILES_DIRS = [
 
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'users:profile'
+LOGIN_REDIRECT_URL = 'Feed:feed'
