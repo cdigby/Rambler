@@ -16,6 +16,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker-compose up -d
-    - name: Check app is running
-      run: docker ps -a 
+      run: docker-compose build
+    - name: Run unit tests
+      run: docker-compose run web python manage.py test
