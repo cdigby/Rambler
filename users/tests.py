@@ -64,7 +64,17 @@ class UserFormTestCase(TestCase):
             'password_confirmation': 'bob'
         }
         f = UserForm(data)
-        self.assertFalse(f.is_valid())
+        self.assertTrue(f.is_valid())
+        User.objects.create_user(username=f.cleaned_data['username'], email=f.cleaned_data['email'], password=f.cleaned_data['password'])
+        
+        data2 = {
+            'username': 'bob',
+            'email': 'otherbob@bob.com',
+            'password': 'otherbob',
+            'password_confirmation': 'otherbob'
+        }
+        f2 = UserForm(data2)
+        self.assertFalse(f2.is_valid())
 
     def test_non_matching_passwords(self):
         data = {
