@@ -25,7 +25,7 @@ class UserForm(forms.Form):
         #Only if changing username
         if data != self.get_initial_for_field(self, 'username'):
             #Check not already taken
-            if User.objects.filter(username__exact=data).exists():
+            if User.objects.filter(username__iexact=data).exists():
                 raise forms.ValidationError('Username already taken.')
         
         return data

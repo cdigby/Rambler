@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+    {% block scripts %}
+        <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+        <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+        <script src='https://unpkg.com/@turf/turf@6.3.0/turf.min.js'></script>
+    {% endblock scripts %}
+
+    {% block styles %}
+        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet'/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
+        <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet'/>
+    {% endblock styles %}
+
+    {% block meta %}
+        <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    {% endblock meta %}
+    <body>
+    {% csrf_token %}
+
+    <div id='map' style='width: 700px; height: 700px;'></div>
+    <h1>{{ route.title }}</h1>
+    <p>{{ route.description }}</p>
+    <p>Length: {{ route.length }}</p>
+
+    <img id="mapimg">
+
+    <script>
+
+        mapboxgl.accessToken = 'pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/outdoors-v11',
+            center: [-0.57048282701993, 51.23653894018821], // starting position
+            zoom: 12
+        });
+
+        points = {{ route.points }};
+        console.log(points);
+
+        map.on('load', function () {
+            map.addSource('route', {
+                'type': 'geojson',
+                'data': {
+                    'type': 'Feature',
+                    'properties': {},
+                    'geometry': {
+                        'type': 'LineString',
+                        'coordinates': points
+                    }
+                }
+            });
+            map.addLayer({
+                'id': 'route',
+                'type': 'line',
+                'source': 'route',
+                'layout': {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                'paint': {
+                    'line-color': 'blue',
+                    'line-width': 3
+                }
+            });
+        });
+
+        function genImage() {
+            image = "{{ route.image }}".replaceAll('&quot;', '"');
+            console.log(image);
+            document.getElementById("mapimg").setAttribute("src", image);
+        }
+
+        window.onload = genImage();
+    </script>
+
+    </body>
+{% endblock content %}

@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block scripts %}
+    <script src="{% static '/js/feed.js' %}"></script>
+{% endblock  %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static '/css/feed.css' %}">
+{% endblock  %}
+
+{% block meta %}
+    <meta charset="UTF-8">
+{% endblock %}
+
+{% block content %}
+    <div class="section">
+        {% csrf_token %}
+
+        {# Search bar #}
+        <nav class="level">
+            <div class="level-left">
+                <div class="level-item">
+                    <p class="subtitle is-5">
+                        <strong>{{ count }}</strong> routes
+                    </p>
+                </div>
+
+                <div class="level-item">
+                    <form method="get">
+                    <div class="field has-addons">
+
+                        <div class="control is-expanded">
+                            <input name="query" class="input" type="text" placeholder="Find a route" value="{{ query }}">
+                        </div>
+
+                        <div class="control">
+                            <span class="select">
+                            <select name="target">
+                                <option value="routes" {% if target == 'routes' %}selected{% endif %}>Routes</option>
+                                <option value="tags"{% if target == 'tags' %}selected{% endif %}>Tags</option>
+                                <option value="description"{% if target == 'description' %}selected{% endif %}>Description</option>
+                                <option value="users"{% if target == 'users' %}selected{% endif %}>Users</option>
+                            </select>
+                            </span>
+                        </div>
+
+                        <div class="control">
+                            <span class="select">
+                            <select name="sort">
+                                <option value="new" {% if sort == 'new' %}selected{% endif %}>Latest</option>
+                                <option value="old" {% if sort == 'old' %}selected{% endif %}>Oldest</option>
+                                <option value="top" {% if sort == 'top' %}selected{% endif %}>Popular</option>
+                            </select>
+                            </span>
+                        </div>
+
+                        <div class="control">
+                            <button class="button">
+                                Search
+                            </button>
+                        </div>
+
+                    </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="level-right">
+                <div class="level-item">
+                    <strong>All:</strong>
+                </div>
+                <div class="level-item">
+                    <a id="allnew" href="{% url 'Feed:feed' %}?showall=new">Latest<a/>
+                </div>
+                <div class="level-item">
+                    <a id="allold" href="{% url 'Feed:feed' %}?showall=old">Oldest<a/>
+                </div>
+                <div class="level-item">
+                    <a id="alltop" href="{% url 'Feed:feed' %}?showall=top">Most Popular</a>
+                </div>
+                <div class="level-item">
+                    <a href="{% url 'RoutePlanner:route-planner' %}" class="button is-success">New Route</a>
+                </div>
+            </div>
+        </nav>
+
+
+        {# Display cards #}
+        <div class="container">
+            {% for r1, r2 in routes %}
+                <div class="tile is-ancestor">
+                    <div class="tile is-parent">
+                        <div class="tile is-child">
+                            {% include 'Feed/route_card.html' with route=r1 %}
+                        </div>
+                    </div>
+                    <div class="tile is-parent">
+                        <div class="tile is-child">
+                            {% if r2 != None %}
+                            {% include 'Feed/route_card.html' with route=r2 %}
+                            {% endif %}   
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
