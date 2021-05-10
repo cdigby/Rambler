@@ -10,7 +10,6 @@ image = "image"
 user = 1
 tags = "scenic walk"
 
-
 # Create your tests here.
 class RouteTestCase(TestCase):
 
@@ -73,5 +72,5 @@ class RouteTestCase(TestCase):
         self.assertEqual(retrieved_route.points, "[[100.0, 100.0], [30.0, 30.0]]")
         self.assertEqual(retrieved_route.length, 100.0)
         self.assertEqual(retrieved_route.image, "image")
-
+        self.assertEqual(retrieved_route.tags, "scenic walk")
 
