@@ -66,11 +66,11 @@ class RouteTestCase(TestCase):
         route = Route()
         route.create_route(title, points, description, length, image, user, tags)
         route.save()
-        retrieved_route = Route.objects.get(pk=1)
+        retrieved_route = Route.objects.all()[0]
         self.assertEqual(retrieved_route.title, "Title")
         self.assertEqual(retrieved_route.description, "description")
         self.assertEqual(retrieved_route.points, "[[100.0, 100.0], [30.0, 30.0]]")
         self.assertEqual(retrieved_route.length, 100.0)
         self.assertEqual(retrieved_route.image, "image")
-        self.assertEqual(retrieved_route.tags, "scenic walk")
+        self.assertEqual(retrieved_route.tags, ['scenic', 'walk'])
 
