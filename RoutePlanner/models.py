@@ -5,7 +5,7 @@ from django.contrib.postgres.fields import ArrayField
 
 
 def validate_presence(attribute):
-    print("Validating: ", attribute)
+    #print("Validating: ", attribute)
     if attribute == "":
         raise ValidationError("%(field) is empty",
                               params={'field': attribute},
@@ -47,7 +47,7 @@ class Route(models.Model):
         self.user = user
         self.tags = tags.lower().split()
         self.rating = 0
-        print(self.length)
+        #print(self.length)
 
     def printRoute(self):
         print(self.title, self.description, round(self.length, 2), self.points, self.image)
@@ -55,7 +55,7 @@ class Route(models.Model):
     def save(self, *args, **kwargs):
         self.full_clean()
         super(Route, self).save(*args, **kwargs)
-        print("Saved route: ", self.title, ", Desc: ", self.description, " with points: ", self.points)
+        #print("Saved route: ", self.title, ", Desc: ", self.description, " with points: ", self.points)
 
     def get_likes(self):
         try:
