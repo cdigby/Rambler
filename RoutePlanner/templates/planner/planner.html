@@ -18,49 +18,55 @@
 {% endblock meta %}
 
 {% block content %}
-
-    {% csrf_token %}
-    <div class="container">
-        <div class="row">
-            <div class="col-sm">
-            </div>
-            <div class="col-sm">
-                <div class="row">
-                    <h1>Route Planner:</h1>
-                </div>
-
-                <div class="row">
-                    <div id='map' style='width: 700px; height: 700px;'></div>
-                </div>
-
-                <div class="row">
-                    <div id="undo">
-                        <button onclick="undo()">Undo</button>
-                    </div>
-                    <div id="save">
-                        <button onclick="saveRoute()">Save</button>
-                    </div>
-                    <div id="generateInstructions">
-                        <button onclick="displayInstructions()">Generate Instructions</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div id="dataEntry", class="">
-                        <p id="errors"></p>
-                        <input id="titleBox" type="text" placeholder="Give your route a title...">
-                        <br><input id="descriptionBox" type="text" placeholder="Tell us about your route!">
-                        <br><input id="tagsBox" type="text" placeholder="Give your route some tags...">
-                    </div>
-                </div>
-                <div class="row">
-                    <div id="instructions"></div>
-                </div>
-            </div>
-            <div class="col-sm">
-            </div>
+    <div class="section">
+        <div class="container has-text-centered">
+            <p class="title">Route Planner</p>
         </div>
     </div>
 
-    <img id="mapimg">
+    <div class="columns is-centered">
+        <div class="column is-half">
+            <div class="box">
+                <div id='map' style='width: 700px; height: 700px;'></div> 
+                <div class="field is-grouped mt-4">
+                    <div id="undo" class="control">
+                        <button onclick="undo()" class="button is-light">Undo</button>
+                    </div>
+                    <div id="save" class="control">
+                        <button onclick="saveRoute()" class="button is-success">Save</button>
+                    </div>
+                    <div id="generateInstructions" class="control">
+                        <button onclick="displayInstructions()" class="button is-link">Generate Instructions</button>
+                    </div>
+                </div>
+                <div id="errors"></div>
+                <div id="dataEntry">
+                    <div class="field">
+                        <label class="label">Title</label>
+                        <div class="control">
+                            <input class="input" id="titleBox" type="text" placeholder="Give your route a title...">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Description</label>
+                        <div class="control">
+                            <input class="input" id="descriptionBox" type="text" placeholder="Tell us about your route!">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Tags</label>
+                        <div class="control">
+                            <input class="input" id="tagsBox" type="text" placeholder="Give your route some tags separated by spaces...">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="instructions"></div>
+            </div>               
+        </div>
+    </div>
 
 {% endblock content %}
+

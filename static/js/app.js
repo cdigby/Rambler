@@ -10,6 +10,7 @@ $(() => {
 
     //Delete notifications when button pressed
     $('button.delete').click((event) => {
+        console.log("delete")
         $(event.target).parent().parent().remove()
     })
 

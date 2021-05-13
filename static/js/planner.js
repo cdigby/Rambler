@@ -8,10 +8,9 @@ var points
 var endMarker
 var startMarker
 var map
+var fullInstructions
 
 $(() => {
-    
-
     mapboxgl.accessToken = 'pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ';
     map = new mapboxgl.Map({
         container: 'map',
@@ -88,7 +87,7 @@ function getRoute(points) {
             var tripInstructions = [];
             for (var i = 0; i < steps.length; i++) {
                 tripInstructions.push('<br><li>' + steps[i].maneuver.instruction.substring(0, (steps[i].maneuver.instruction.length-1))) + '</li>';
-                fullInstructions = '<br><h2>Instructions:</h2><br><span class="duration">Trip duration: ' + Math.floor(data.duration / 60) + ' min </span>' + tripInstructions;
+                fullInstructions = '<br><label class="label">Instructions:</label><span class="duration">Trip duration: ' + Math.floor(data.duration / 60) + ' min </span>' + tripInstructions;
             }
             // if the route already exists on the map, reset it using setData
             if (map.getSource('route')) {
@@ -184,21 +183,39 @@ function getCookie(name) {
     return cookieValue;
 }
 
+function genError(msg) {
+    return '<div class="notification is-danger"><span><button class="delete is-pulled-right"></button>' + msg + '</span></div>'
+}
+
+function genSuccess(msg) {
+    return '<div class="notification is-success"><span><button class="delete is-pulled-right"></button>' + msg + '</span></div>'
+}
+
+function setDeleteListener() {
+    $('button.delete').click((event) => {
+        console.log("delete")
+        $(event.target).parent().parent().remove()
+    })
+}
+
 function validateInputs(){
     console.log(document.getElementById("titleBox").value);
     document.getElementById("errors").innerHTML = "";
     console.log(points.length);
     if (points.length < 2){
-        document.getElementById("errors").innerHTML = document.getElementById("errors").textContent + "You must plot a route<br>";
+        document.getElementById("errors").innerHTML = genError("You must plot a route");
+        setDeleteListener()
         return false;
     }
     if (document.getElementById("titleBox").value == ""){
 
-        document.getElementById("errors").innerHTML = document.getElementById("errors").textContent + "You must enter a title<br>";
+        document.getElementById("errors").innerHTML = genError("You must enter a title");
+        setDeleteListener()
         return false;
     }else{
         if (document.getElementById("descriptionBox").value == ""){
-            document.getElementById("errors").innerHTML = document.getElementById("errors").textContent + "You must enter a description";
+            document.getElementById("errors").innerHTML = genError("You must enter a description");
+            setDeleteListener()
             return false;
         }else{
             return true;
@@ -227,6 +244,9 @@ function saveRoute() {
             image: generateMapImage(fullRoute),
             tags: document.getElementById("tagsBox").value
         }));
+
+        document.getElementById("errors").innerHTML = genSuccess("Route saved");
+        setDeleteListener()
     }
 
 
@@ -250,7 +270,9 @@ function repositionStartMarker() {
 }
 
 function displayInstructions(){
-    document.getElementById("instructions").innerHTML = fullInstructions;
+    if (fullInstructions != undefined) {
+        document.getElementById("instructions").innerHTML = fullInstructions;
+    }
 }
 
 function calculateLength(){
@@ -272,7 +294,6 @@ function generateMapImage(route){
                         }
                     };
     
-    document.getElementById("mapimg").setAttribute("src", "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/geojson(" + JSON.stringify(JSONFormat) + ")/-0.5662,51.2309,10.81,0/300x200?access_token=pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ");
     return(("https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/geojson(" + JSON.stringify(JSONFormat) + ")/-0.5662,51.2309,10.81,0/300x200?access_token=pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ").toString());
    
 }
