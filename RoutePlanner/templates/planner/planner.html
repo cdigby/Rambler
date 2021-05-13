@@ -19,54 +19,56 @@
 
 {% block content %}
     <div class="section">
-        <div class="container has-text-centered">
+        <div class="container has-text-centered mb-4">
             <p class="title">Route Planner</p>
         </div>
-    </div>
 
-    <div class="columns is-centered">
-        <div class="column is-half">
-            <div class="box">
-                <div id='map' style='width: 700px; height: 700px;'></div> 
-                <div class="field is-grouped mt-4">
-                    <div id="undo" class="control">
-                        <button onclick="undo()" class="button is-danger">Undo</button>
+        <div class="columns is-centered">
+            <div class="column is-half">
+                <div class="box">
+                    <div id='map' style='width: 700px; height: 700px;'></div> 
+                    <div class="field is-grouped mt-4">
+                        <div id="undo" class="control">
+                            <button onclick="undo()" class="button is-danger">Undo</button>
+                        </div>
+                        <div id="save" class="control">
+                            <button onclick="saveRoute()" class="button is-success">Save</button>
+                        </div>
+                        <div id="generateInstructions" class="control">
+                            <button onclick="displayInstructions()" class="button is-link">Generate Instructions</button>
+                        </div>
                     </div>
-                    <div id="save" class="control">
-                        <button onclick="saveRoute()" class="button is-success">Save</button>
-                    </div>
-                    <div id="generateInstructions" class="control">
-                        <button onclick="displayInstructions()" class="button is-link">Generate Instructions</button>
-                    </div>
-                </div>
-                <div id="errors"></div>
-                <div id="dataEntry">
-                    <div class="field">
-                        <label class="label">Title</label>
-                        <div class="control">
-                            <input class="input" id="titleBox" type="text" placeholder="Give your route a title...">
+                    <div id="errors"></div>
+                    <div id="dataEntry">
+                        <div class="field">
+                            <label class="label">Title</label>
+                            <div class="control">
+                                <input class="input" id="titleBox" type="text" placeholder="Give your route a title...">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Description</label>
+                            <div class="control">
+                                <input class="input" id="descriptionBox" type="text" placeholder="Tell us about your route!">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Tags</label>
+                            <div class="control">
+                                <input class="input" id="tagsBox" type="text" placeholder="Give your route some tags separated by spaces...">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="field">
-                        <label class="label">Description</label>
-                        <div class="control">
-                            <input class="input" id="descriptionBox" type="text" placeholder="Tell us about your route!">
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label class="label">Tags</label>
-                        <div class="control">
-                            <input class="input" id="tagsBox" type="text" placeholder="Give your route some tags separated by spaces...">
-                        </div>
-                    </div>
-                </div>
-
-                <div id="instructions"></div>
-            </div>               
+                    <div id="instructions"></div>
+                </div>               
+            </div>
         </div>
     </div>
+
+    
 
 {% endblock content %}
 
