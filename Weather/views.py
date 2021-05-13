@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from urllib.request import urlopen
+from django.http import HttpResponse
 import json
 import calendar
 from datetime import datetime
@@ -13,7 +14,7 @@ def findDay(date):
 def grabAll():
 
     # Grabs the api info and converts it with UTF-8 and turns it into JSON
-    WeatherData = urlopen('https://api.openweathermap.org/data/2.5/onecall?lat=51.2362&lon=0.5704&exclude=minutely,daily&appid=43c857fcf65df3b0311f0242f20bf506')
+    WeatherData = urlopen('https://api.openweathermap.org/data/2.5/onecall?lat=51.2362&lon=0.5704&exclude=minutely&appid=43c857fcf65df3b0311f0242f20bf506')
     string = WeatherData.read().decode('utf-8')
     WeatherDataJson = json.loads(string)
 
@@ -69,23 +70,70 @@ def grabAll():
     popHourly = popHourly1[:-1]
 
     list_of_times_hourly = []
+    list_of_days_hourly = []
+    list_of_times_hourly_H = []
+    ListOfAll = []
 
     for i in range(0,11):
         list_of_times_hourly.append(datetime.fromtimestamp(int(timeHourly[i])).strftime('%Y-%m-%d %H:%M:%S'))
-
-
-    list_of_days_hourly = []
-    list_of_times_hourly_H = []
-
-    for i in range(0,11):
         date_first1 = datetime.strptime(list_of_times_hourly[i], '%Y-%m-%d %H:%M:%S')
         list_of_days_hourly.append(findDay(date_first1.strftime("%d %m %Y")))
         list_of_times_hourly_H.append(date_first1.strftime("%H:%M"))
-
-    ListOfAll = []
-
-    for i in range(len(popHourly)):
         ListOfAll.append((weatherHourly[i], iconHourly[i], descHourly[i], list_of_days_hourly[i], list_of_times_hourly_H[i], popHourly[i]))
+        
+        
+    ## ----- Daily Weather Data ----- ##
+
+    # Daily variables
+
+    weatherD = ""
+    iconD = ""
+    descD = ""
+    timeD = ""
+    popD = ""
+
+    # Reads the needed JSON info for each part
+    for i in range(0, 7):
+
+        weatherD = weatherD + WeatherDataJson['daily'][i]['weather'][0]['main'] + " " + str(round((float(WeatherDataJson['daily'][i]['temp']['day'])) - 273.15)) + "°C" + ", "
+        iconD = iconD + WeatherDataJson['daily'][i]['weather'][0]['icon'] + ", "
+        descD = descD + WeatherDataJson['daily'][i]['weather'][0]['description'] + ", "
+        timeD = timeD + str(WeatherDataJson['daily'][i]['dt']) + ", "
+
+        if WeatherDataJson['daily'][i]['pop'] < 0.05 :
+            popD = popD + "<5%, "
+        else:
+            popD = popD + str(int(WeatherDataJson['daily'][i]['pop']*100)) + "%, "
+
+    # Creating lists to store the daily variables in
+
+    weatherDaily1 = weatherD.split(', ')
+    weatherDaily = weatherDaily1[:-1]
+
+    iconDaily1 = iconD.split(', ')
+    iconDaily = iconDaily1[:-1]
+
+    descDaily1 = descD.split(', ')
+    descDaily = descDaily1[:-1]
+
+    timeDaily1 = timeD.split(', ')
+    timeDaily = timeDaily1[:-1]
+
+    popDaily1 = popD.split(', ')
+    popDaily = popDaily1[:-1]
+
+    list_of_times_daily = []
+    list_of_days_Daily = []
+    list_of_times_Daily_D = []
+    ListOfAll2 = []
+
+    for i in range(len(timeDaily)):
+        list_of_times_daily.append(datetime.fromtimestamp(int(timeDaily[i])).strftime('%Y-%m-%d %H:%M:%S'))
+        date_first1 = datetime.strptime(list_of_times_daily[i], '%Y-%m-%d %H:%M:%S')
+        list_of_days_Daily.append(findDay(date_first1.strftime("%d %m %Y")))
+        list_of_times_Daily_D.append(date_first1.strftime("%H:%M"))
+        ListOfAll2.append((weatherDaily[i], iconDaily[i], descDaily[i], list_of_days_Daily[i], list_of_times_Daily_D[i], popDaily[i]))    
+        
 
     data = {
         "currentDay": currentDay,
@@ -93,9 +141,14 @@ def grabAll():
         "currentTemp": currentTemp,
         "currentWeather": currentWeather,
 
-        "ListOfAll": ListOfAll
+        "ListOfAll": ListOfAll,
+        "ListOfAll2":ListOfAll2
     }
+
     return data
+
+
+
 
 # Create your views here.
 def weather(request):
