@@ -1,4 +1,10 @@
-{% extends "weather/base.html" %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static '/css/feed.css' %}">
+{% endblock  %}
+
 {% block content %}
 
 <div class="cover" id="container">
@@ -8,14 +14,10 @@
     <br>
     <br>
     <div id="HourlyData">
-    <div class="row">
-        <div class="margin-left"></div>
-            <div class="col-md-4">
-            </div>
-            <div class="col-md-3">
+        <div class="columns">
+            <div class="column">
                 <div class="cen">
                     <div class="lightgrey">
-                        {% load static %}
                         {% if currentIcon == "01d" %}
                         <img src="{% static 'images/clearSky.png' %}" alt="clearSky">
                         {% elif currentIcon == "02d" %}
@@ -47,56 +49,55 @@
                     </div>
                 </div>
             </div>
-    </div>
 
-    <br>
+            <br>
 
-    <div class="row">
-        <div class="margin-left"></div>
-        {% for a,b,c,d,e,f in ListOfAll %}
-        <div class="col-md-1">
-            <div class="cen">
-                <div class="lightgrey">
-                    {% load static %}
-                    {% if b == "01d" %}
-                    <img src="{% static 'images/clearSky.png' %}" alt="clearSky">
-                    {% elif b == "02d" %}
-                    <img src="{% static 'images/fewClouds.png' %}" alt="fewClouds">
-                    {% elif b == "03d" or b == "03n" %}
-                    <img src="{% static 'images/scatteredClouds.png' %}" alt="scatteredClouds">
-                    {% elif b == "04d" or b == "04n" %}
-                    <img src="{% static 'images/brokenClouds.png' %}" alt="brokenClouds">
-                    {% elif b == "09d" or b == "09n" %}
-                    <img src="{% static 'images/showerRain.png' %}" alt="showerRain">
-                    {% elif b == "10d" %}
-                    <img src="{% static 'images/rain.png' %}" alt="rain">
-                    {% elif b == "11d" or b == "11n" %}
-                    <img src="{% static 'images/thunderstorm.png' %}" alt="thunderstorm">
-                    {% elif b == "13d" or b == "13n" %}
-                    <img src="{% static 'images/snow.png' %}" alt="snow">
-                    {% elif b == "50d" or b == "50n" %}
-                    <img src="{% static 'images/mist.png' %}" alt="mist">
-                    {% elif b == "01n" %}
-                    <img src="{% static 'images/clearSkyN.png' %}" alt="clearSkyN">
-                    {% elif b == "02n" %}
-                    <img src="{% static 'images/fewCloudsN.png' %}" alt="fewCloudsN">
-                    {% elif b == "10n" %}
-                    <img src="{% static 'images/rainN.png' %}" alt="rainN">
-                    {% endif %}
+            <div class="row">
+                <div class="margin-left"></div>
+                {% for a,b,c,d,e,f in ListOfAll %}
+                <div class="col-md-1">
+                    <div class="cen">
+                        <div class="lightgrey">
+                            {% load static %}
+                            {% if b == "01d" %}
+                            <img src="{% static 'images/clearSky.png' %}" alt="clearSky">
+                            {% elif b == "02d" %}
+                            <img src="{% static 'images/fewClouds.png' %}" alt="fewClouds">
+                            {% elif b == "03d" or b == "03n" %}
+                            <img src="{% static 'images/scatteredClouds.png' %}" alt="scatteredClouds">
+                            {% elif b == "04d" or b == "04n" %}
+                            <img src="{% static 'images/brokenClouds.png' %}" alt="brokenClouds">
+                            {% elif b == "09d" or b == "09n" %}
+                            <img src="{% static 'images/showerRain.png' %}" alt="showerRain">
+                            {% elif b == "10d" %}
+                            <img src="{% static 'images/rain.png' %}" alt="rain">
+                            {% elif b == "11d" or b == "11n" %}
+                            <img src="{% static 'images/thunderstorm.png' %}" alt="thunderstorm">
+                            {% elif b == "13d" or b == "13n" %}
+                            <img src="{% static 'images/snow.png' %}" alt="snow">
+                            {% elif b == "50d" or b == "50n" %}
+                            <img src="{% static 'images/mist.png' %}" alt="mist">
+                            {% elif b == "01n" %}
+                            <img src="{% static 'images/clearSkyN.png' %}" alt="clearSkyN">
+                            {% elif b == "02n" %}
+                            <img src="{% static 'images/fewCloudsN.png' %}" alt="fewCloudsN">
+                            {% elif b == "10n" %}
+                            <img src="{% static 'images/rainN.png' %}" alt="rainN">
+                            {% endif %}
+                        </div>
+                        <div class="lightgrey">
+                            {{d}} <br>
+                            {{e}} <br>
+                            {{a}} <br>
+                            {{c}} <br>
+                            Rain % = {{f}} <br>
+
+                        </div>
+                    </div>
                 </div>
-                <div class="lightgrey">
-                    {{d}} <br>
-                    {{e}} <br>
-                    {{a}} <br>
-                    {{c}} <br>
-                    Rain % = {{f}} <br>
-
-                </div>
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
-    </div>
-
     </div>
 
 
