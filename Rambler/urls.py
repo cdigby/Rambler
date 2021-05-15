@@ -19,9 +19,10 @@ from home import views as home_views
 from Feed import views as feed_views
 
 urlpatterns = [
-    path('', feed_views.display_feed, name='home'),
     path('admin/', admin.site.urls),
+    path('', feed_views.display_feed, name='home'),
     path('users/', include('users.urls')),
     path('routeplanner/', include('RoutePlanner.urls')),
     path('feed/', include('Feed.urls')),
+    path('weather/', include('Weather.urls')),
 ]
