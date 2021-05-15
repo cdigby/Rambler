@@ -21,7 +21,7 @@
                 <a class="navbar-link">Logged in as: {{ user.get_username }}</a>
                 <div class="navbar-dropdown">
                     <a href="{% url 'users:profile' %}" class="navbar-item">Profile</a>
-                    <a href="" class="navbar-item">My Routes</a>
+                    <a href="{% url 'Feed:feed' %}?query={{ user.get_username }}&target=users&sort=new" class="navbar-item">My Routes</a>
                     <hr class="navbar-divider">
                     <a class="navbar-item" href="{% url 'users:logout' %}">Log Out</a>
                 </div>
