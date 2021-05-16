@@ -7,7 +7,7 @@ def displayRoutePage(request, id):
         'title': route.title,
         'description': route.description,
         'points': route.points,
-        'length': route.length,
+        'length': round(route.length, 2),
         'image': route.image,
     }
     route.printRoute()

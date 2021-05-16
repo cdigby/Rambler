@@ -10,6 +10,4 @@ app_name= "Feed"
 
 urlpatterns=[
     path('', views.display_feed, name='feed'),
-    path('/route/<int:id>', RoutePageViews.displayRoutePage, name='route-page'),
-    path('route', RoutePageViews.displayRoutePage),
 ]

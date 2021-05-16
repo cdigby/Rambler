@@ -17,15 +17,26 @@
     {% block meta %}
         <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
     {% endblock meta %}
+
     <body>
     {% csrf_token %}
 
-    <div id='map' style='width: 700px; height: 700px;'></div>
-    <h1>{{ route.title }}</h1>
-    <p>{{ route.description }}</p>
-    <p>Length: {{ route.length }}</p>
+    <div class="section">
 
-    <img id="mapimg">
+        <div class="container has-text-centered mb-4">
+            <p class="title">{{ route.title}}:</p>
+        </div>
+        <div class="columns is-centered">
+                <div class="box" style='width: 740px;'>
+                    <div id='map' style='width: 700px; height: 700px;'></div>
+                    <div class="box"style='width: 700px;'>
+                        <p>{{ route.description }}</p>
+                        <p>Length: {{ route.length }}km</p>
+                    </div>
+                </div>
+        </div>
+    </div>
+
 
     <script>
 
@@ -67,13 +78,6 @@
             });
         });
 
-        function genImage() {
-            image = "{{ route.image }}".replaceAll('&quot;', '"');
-            console.log(image);
-            document.getElementById("mapimg").setAttribute("src", image);
-        }
-
-        window.onload = genImage();
     </script>
 
     </body>
