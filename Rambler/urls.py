@@ -25,4 +25,5 @@ urlpatterns = [
     path('routeplanner/', include('RoutePlanner.urls')),
     path('feed/', include('Feed.urls')),
     path('weather/', include('Weather.urls')),
+    path('route/', include('RoutePages.urls')),
 ]
