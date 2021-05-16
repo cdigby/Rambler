@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block scripts %}
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+    <script src='https://unpkg.com/@turf/turf@6.3.0/turf.min.js'></script>
+    <script src="{% static '/js/feed.js' %}"></script>
+{% endblock scripts %}
+
+{% block styles %}
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet'/>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet'/>
+    <link rel="stylesheet" href="{% static '/css/planner.css' %}">
+    <link rel="stylesheet" href="{% static '/css/feed.css' %}">
+{% endblock styles %}
+
+{% block meta %}
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+{% endblock meta %}
+
+{% block content %}
+
+    <body>
+    {% csrf_token %}
+
+    <div class="section">
+
+        <div class="container has-text-centered mb-4">
+            <p class="title">{{ route.title}}</p>
+        </div>
+
+        <div class="box map-container">
+            <div id='map' style='width: 700px; height: 700px;'></div>
+
+            <footer class="card-footer">
+                <button class="button is-danger card-footer-item" name="Like" onclick="dislike({{ route.id }})">Dislike</button>
+                <p id="rating-{{ route.id }}" class="card-footer-item">{{ route.rating }}</p>
+                <button class="button is-success card-footer-item" name="Like" onclick="like({{ route.id }})">Like</button>
+            </footer>
+
+            <p><strong>{{ route.user }} ·</strong> {{ route.date }}</p>
+
+            <p class="mb-2">
+                {% for tag in route.tags %}
+                    <span class="tag is-info">
+                        {{ tag }}
+                    </span>
+                {% endfor %}
+            </p>
+
+            <div class="box">
+                <p>{{ route.description }}</p>
+                <p>Length: {{ route.length }}km</p>
+            </div>
+            
+            <div class="box">
+                <p>Live Chat:</p>
+                <div id="live_chat"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+        mapboxgl.accessToken = 'pk.eyJ1IjoianNvbmJvdXJuZSIsImEiOiJja2xzMXpuODYxYmNvMm9ud2JxdHRuZzE0In0.8R6NEIohdETFfkjo5U5GdQ';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/outdoors-v11',
+            center: [-0.57048282701993, 51.23653894018821], // starting position
+            zoom: 12
+        });
+
+        points = {{ route.points }};
+        console.log(points);
+
+        map.on('load', function () {
+            map.addSource('route', {
+                'type': 'geojson',
+                'data': {
+                    'type': 'Feature',
+                    'properties': {},
+                    'geometry': {
+                        'type': 'LineString',
+                        'coordinates': points
+                    }
+                }
+            });
+            map.addLayer({
+                'id': 'route',
+                'type': 'line',
+                'source': 'route',
+                'layout': {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                'paint': {
+                    'line-color': 'blue',
+                    'line-width': 3
+                }
+            });
+        });
+
+    </script>
+
+    </body>
+{% endblock content %}

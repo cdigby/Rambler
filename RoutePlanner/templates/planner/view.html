@@ -4,13 +4,12 @@
         <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
         <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
         <script src='https://unpkg.com/@turf/turf@6.3.0/turf.min.js'></script>
+        <script src="{% static '/js/feed.js' %}"></script>
     {% endblock scripts %}
 
     {% block styles %}
         <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet'/>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-              crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static '/css/feed.css' %}">
         <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet'/>
     {% endblock styles %}
 
@@ -20,12 +19,15 @@
     <body>
     {% csrf_token %}
 
-    <div id='map' style='width: 700px; height: 700px;'></div>
-    <h1>{{ route.title }}</h1>
-    <p>{{ route.description }}</p>
-    <p>Length: {{ route.length }}</p>
+    <div class="columns is-centered">
+        <h1>{{ route.title }}</h1>
+        <div id='map' style='width: 700px; height: 700px;'></div>
+        <p>{{ route.description }}</p>
+        <p>Length: {{ route.length }}</p>
+        <p>Yeeeeee</p>
+    </div>
 
-    <img id="mapimg">
+
 
     <script>
 
@@ -67,13 +69,6 @@
             });
         });
 
-        function genImage() {
-            image = "{{ route.image }}".replaceAll('&quot;', '"');
-            console.log(image);
-            document.getElementById("mapimg").setAttribute("src", image);
-        }
-
-        window.onload = genImage();
     </script>
 
     </body>
