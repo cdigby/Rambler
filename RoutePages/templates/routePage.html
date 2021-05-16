@@ -27,7 +27,7 @@
     <div class="section">
 
         <div class="container has-text-centered mb-4">
-            <p class="title">{{ route.title}}:</p>
+            <p class="title">{{ route.title}}</p>
         </div>
 
         <div class="box map-container">
@@ -39,7 +39,7 @@
                 <button class="button is-success card-footer-item" name="Like" onclick="like({{ route.id }})">Like</button>
             </footer>
 
-            <p><strong>{{ route.user }},</strong> {{ route.date }}</p>
+            <p><strong>{{ route.user }} ·</strong> {{ route.date }}</p>
 
             <p class="mb-2">
                 {% for tag in route.tags %}
