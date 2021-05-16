@@ -34,7 +34,7 @@ function getCookie(name) {
 function like(route){
     $.ajax({
         type: 'POST',
-        url: '',
+        url: '/feed/',
         headers: {
             'X-CSRFToken': Cookies.get('csrftoken')
         },
@@ -49,7 +49,7 @@ function like(route){
 function dislike(route){
     $.ajax({
         type: 'POST',
-        url: '',
+        url: '/feed/',
         headers: {
             'X-CSRFToken': Cookies.get('csrftoken')
         },

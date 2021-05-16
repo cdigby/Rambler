@@ -10,10 +10,9 @@
 
 {% block styles %}
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet'/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossorigin="anonymous">
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet'/>
+    <link rel="stylesheet" href="{% static '/css/planner.css' %}">
+    <link rel="stylesheet" href="{% static '/css/feed.css' %}">
 {% endblock styles %}
 
 {% block meta %}
@@ -30,32 +29,35 @@
         <div class="container has-text-centered mb-4">
             <p class="title">{{ route.title}}:</p>
         </div>
-        <div class="columns is-centered">
-                <div class="box" style='width: 740px;'>
-                    <p><strong>{{ route.user }},</strong> {{ route.date }}</p>
-                    <div id='map' style='width: 700px; height: 700px;'></div>
-                    <footer class="card-footer">
-                        <button class="button is-danger card-footer-item" name="Like" onclick="dislike({{ route.id }})">Dislike</button>
-                        <p id="rating-{{ route.id }}" class="card-footer-item">{{ route.rating }}</p>
-                        <button class="button is-success card-footer-item" name="Like" onclick="like({{ route.id }})">Like</button>
-                    </footer>
 
-                    <div class="box"style='width: 700px;'>
-                        <p>{{ route.description }}</p>
-                        <p>Length: {{ route.length }}km</p>
-                    </div>
-                    <p>
-                        {% for tag in route.tags %}
-                            <span class="tag is-info">
-                                {{ tag }}
-                            </span>
-                        {% endfor %}
-                    </p>
-                    <div class="box"style='width: 700px;'>
-                        <p>Live Chat:</p>
-                        <div id="live_chat"></div>
-                    </div>
-                </div>
+        <div class="box map-container">
+            <div id='map' style='width: 700px; height: 700px;'></div>
+
+            <footer class="card-footer">
+                <button class="button is-danger card-footer-item" name="Like" onclick="dislike({{ route.id }})">Dislike</button>
+                <p id="rating-{{ route.id }}" class="card-footer-item">{{ route.rating }}</p>
+                <button class="button is-success card-footer-item" name="Like" onclick="like({{ route.id }})">Like</button>
+            </footer>
+
+            <p><strong>{{ route.user }},</strong> {{ route.date }}</p>
+
+            <p class="mb-2">
+                {% for tag in route.tags %}
+                    <span class="tag is-info">
+                        {{ tag }}
+                    </span>
+                {% endfor %}
+            </p>
+
+            <div class="box">
+                <p>{{ route.description }}</p>
+                <p>Length: {{ route.length }}km</p>
+            </div>
+            
+            <div class="box">
+                <p>Live Chat:</p>
+                <div id="live_chat"></div>
+            </div>
         </div>
     </div>
 

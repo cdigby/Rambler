@@ -16,6 +16,6 @@ def displayRoutePage(request, id):
         'user': User.objects.get(pk=route.user).username,
         'date': route.date,
     }
-    route.printRoute()
+    #route.printRoute()
     return render(request, 'routePage.html', {'route': routeDict})
 
