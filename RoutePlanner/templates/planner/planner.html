@@ -11,6 +11,7 @@
 {% block styles %}
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet'/>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet'/>
+    <link rel="stylesheet" href="{% static '/css/planner.css' %}">
 {% endblock styles %}
 
 {% block meta %}
@@ -23,49 +24,45 @@
             <p class="title">Route Planner</p>
         </div>
 
-        <div class="columns is-centered">
-            <div class="column is-half">
-                <div class="box">
-                    <div id='map' style='width: 700px; height: 700px;'></div> 
-                    <div class="field is-grouped mt-4">
-                        <div id="undo" class="control">
-                            <button onclick="undo()" class="button is-danger">Undo</button>
-                        </div>
-                        <div id="save" class="control">
-                            <button onclick="saveRoute()" class="button is-success">Save</button>
-                        </div>
-                        <div id="generateInstructions" class="control">
-                            <button onclick="displayInstructions()" class="button is-link">Generate Instructions</button>
-                        </div>
-                    </div>
-                    <div id="errors"></div>
-                    <div id="dataEntry">
-                        <div class="field">
-                            <label class="label">Title</label>
-                            <div class="control">
-                                <input class="input" id="titleBox" type="text" placeholder="Give your route a title...">
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <label class="label">Description</label>
-                            <div class="control">
-                                <input class="input" id="descriptionBox" type="text" placeholder="Tell us about your route!">
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <label class="label">Tags</label>
-                            <div class="control">
-                                <input class="input" id="tagsBox" type="text" placeholder="Give your route some tags separated by spaces...">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="instructions"></div>
-                </div>               
+        <div class="box map-container">
+            <div id='map' style='width: 700px; height: 700px;'></div> 
+            <div class="field is-grouped mt-4">
+                <div id="undo" class="control">
+                    <button onclick="undo()" class="button is-danger">Undo</button>
+                </div>
+                <div id="save" class="control">
+                    <button onclick="saveRoute()" class="button is-success">Save</button>
+                </div>
+                <div id="generateInstructions" class="control">
+                    <button onclick="displayInstructions()" class="button is-link">Generate Instructions</button>
+                </div>
             </div>
-        </div>
+            <div id="errors"></div>
+            <div id="dataEntry">
+                <div class="field">
+                    <label class="label">Title</label>
+                    <div class="control">
+                        <input class="input" id="titleBox" type```="text" placeholder="Give your route a title...">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Description</label>
+                    <div class="control">
+                        <input class="input" id="descriptionBox" type="text" placeholder="Tell us about your route!">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Tags</label>
+                    <div class="control">
+                        <input class="input" id="tagsBox" type="text" placeholder="Give your route some tags separated by spaces...">
+                    </div>
+                </div>
+            </div>
+
+            <div id="instructions"></div>
+        </div>               
     </div>
 
     

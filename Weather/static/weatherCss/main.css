@@ -1,7 +1,6 @@
 body {
     background: #fafafa;
     color: #333333;
-    margin-top: 5rem;
 }
   
 h1, h2, h3, h4, h5, h6 {
@@ -70,3 +69,10 @@ ul {
 @media screen and (max-width: 992px) {
     .lightgrey, .cen, .margin-left {width: 100%;}
   }
+
+.navbar {
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}

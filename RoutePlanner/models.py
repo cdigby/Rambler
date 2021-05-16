@@ -32,7 +32,8 @@ class Route(models.Model):
     description = models.TextField(max_length=450, default="", validators=[validate_presence])
     points = models.TextField(default="", validators=[validate_presence])
     length = models.FloatField(default=0.0, validators=[validate_length])
-    image = models.CharField(max_length=2048, default="")
+    #Limit image url to 8192 characters, as that is the max the mapbox api will accept
+    image = models.CharField(max_length=8192, default="")
     user = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True)
     tags = ArrayField(models.CharField(max_length=50, blank=True))

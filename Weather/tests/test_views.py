@@ -6,7 +6,7 @@ class TestViews(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.weather_url = reverse('weather-page')
+        self.weather_url = reverse('Weather:weather-page')
 
     def test_page(self):
         response = self.client.get(self.weather_url)

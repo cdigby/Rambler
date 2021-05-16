@@ -5,5 +5,5 @@ from Weather.views import weather
 class TestUrls(SimpleTestCase):
 
     def test_weather_page_working(self):
-        url = reverse('weather-page')
+        url = reverse('Weather:weather-page')
         self.assertEquals(resolve(url).func, weather)
