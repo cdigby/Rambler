@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'home.apps.HomeConfig',
     'Feed',
+    'RoutePages',
 ]
 
 MIDDLEWARE = [
