@@ -19,10 +19,15 @@
     <body>
     {% csrf_token %}
 
-    <h1>{{ route.title }}</h1>
-    <div id='map' style='width: 700px; height: 700px;'></div>
-    <p>{{ route.description }}</p>
-    <p>Length: {{ route.length }}</p>
+    <div class="columns is-centered">
+        <h1>{{ route.title }}</h1>
+        <div id='map' style='width: 700px; height: 700px;'></div>
+        <p>{{ route.description }}</p>
+        <p>Length: {{ route.length }}</p>
+        <p>Yeeeeee</p>
+    </div>
+
+
 
     <script>
 
