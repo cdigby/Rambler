@@ -141,10 +141,10 @@ LOGIN_REDIRECT_URL = 'Feed:feed'
 ASGI_APPLICATION = "Rambler.routing.application"
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': "channels.layers.InMemoryChannelLayer"
-      #  'BACKEND': 'channels_redis.core.RedisChannelLayer',
-     #   'CONFIG': {
-     #       "hosts": [('127.0.0.1', 6379)],
-   #     },
+      #  'BACKEND': "channels.layers.InMemoryChannelLayer"
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
     },
 }
