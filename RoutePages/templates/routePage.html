@@ -56,7 +56,9 @@
             
             <div class="box">
                 <p>Live Chat:</p>
-                <div id="live_chat"></div>
+                <div id="live_chat">
+                    {% include "room.html" with room_name=route.id %}
+                </div>
             </div>
         </div>
     </div>
