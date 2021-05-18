@@ -26,4 +26,5 @@ urlpatterns = [
     path('feed/', include('Feed.urls')),
     path('weather/', include('Weather.urls')),
     path('route/', include('RoutePages.urls')),
+    path('chat/', include('chat.urls')),
 ]

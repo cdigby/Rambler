@@ -25,7 +25,7 @@ SECRET_KEY = ')o_%bjn=5ocso_aakt0$7dcl-c^23o1x%ygyif)!#j@hhf&amc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0']
 
 
 # Application definition
@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'Feed',
     'RoutePages',
+    'chat',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +138,13 @@ STATICFILES_DIRS = [
 
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'Feed:feed'
+ASGI_APPLICATION = "Rambler.routing.application"
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': "channels.layers.InMemoryChannelLayer"
+      #  'BACKEND': 'channels_redis.core.RedisChannelLayer',
+     #   'CONFIG': {
+     #       "hosts": [('127.0.0.1', 6379)],
+   #     },
+    },
+}
