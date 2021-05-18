@@ -4,10 +4,22 @@
     <meta charset="utf-8" />
     <title>Chatroom</title>
   </head>
+
   <body>
-    <textarea id="log" cols="80" rows="10"></textarea><br />
-    <input id="chat_input" type="text" size="75" /><br />
-    <input id="chat_submit" type="button" value="Send" />
+    <div class="field">
+      <div class="control">
+        <textarea class="textarea" id="log" rows="10"></textarea>
+      </div>
+    </div>
+    <div class="field is-grouped">
+      <div class="control is-expanded">
+        <input class="input" id="chat_input" type="text"  />
+      </div>
+      <div class="control">
+        <input class="button is-link" id="chat_submit" type="button" value="Send" />
+      </div>
+    </div>
+    
 
     {{ request.user.username|json_script:"user_username" }} 
     {{ room_name|json_script:"room-name" }}
