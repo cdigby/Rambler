@@ -21,8 +21,7 @@ from home import views as home_views
 urlpatterns = [
     path('', home_views.home, name='home'),
     path('admin/', admin.site.urls),
-   # path('chat/', include('chat.urls')),
-    path('', include('chat.urls')),
+    path('chat/', include('chat.urls')),
     path('users/', include('users.urls')),
     path('routeplanner/', include('RoutePlanner.urls')),
     path('feed/', include('Feed.urls')),
